@@ -1734,7 +1734,12 @@ textarea.form-control {
   .page-header {
     flex-direction: column !important;
     align-items: flex-start !important;
+    text-align: left !important;
     gap: var(--space-4) !important;
+  }
+  .page-title, .page-subtitle {
+    text-align: left !important;
+    width: 100%;
   }
   .page-header > div:last-child {
     width: 100%;
@@ -1750,15 +1755,40 @@ textarea.form-control {
     padding: var(--space-4);
   }
   .card-header {
-    flex-wrap: wrap;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important; /* Force start */
+    text-align: left !important;
     gap: var(--space-3);
   }
-  .card-actions {
-    width: 100%;
-    flex-wrap: wrap;
+  .card-header > div:first-child {
+    text-align: left !important;
+    align-items: flex-start !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
   }
+  .card-title, .card-subtitle {
+    text-align: left !important;
+    width: 100% !important;
+    display: block !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+  }
+  .card-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: var(--space-2);
+  }
+  .card-actions .form-control,
   .card-actions select.form-control {
     width: 100% !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
   }
 
   /* KPI / Stat grids */
@@ -1797,11 +1827,11 @@ textarea.form-control {
   .tab-nav::-webkit-scrollbar { display: none; }
   .tab-btn {
     flex: 1;
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: flex-start;
     white-space: nowrap;
     font-size: 0.82rem;
-    padding: 7px 10px;
+    padding: 7px 12px;
   }
 
   /* Table */
@@ -1888,7 +1918,7 @@ textarea.form-control {
 
   /* Content */
   .content {
-    padding: var(--space-3) var(--space-3);
+    padding: var(--space-3) var(--space-2);
   }
 
   /* Page header — completely stacked */
@@ -1909,7 +1939,7 @@ textarea.form-control {
   }
   .page-header .btn {
     width: 100% !important;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   /* Date range row inline - keep horizontal */
@@ -1926,6 +1956,10 @@ textarea.form-control {
   }
 
   /* Page titles */
+  .page-title, .page-subtitle {
+    text-align: left !important;
+    width: 100%;
+  }
   .page-title {
     font-size: 1.2rem;
   }
@@ -1935,19 +1969,26 @@ textarea.form-control {
 
   /* Cards */
   .card {
-    padding: var(--space-3);
+    padding: var(--space-4) var(--space-2);
     border-radius: var(--radius-md);
     min-width: 0;
     max-width: 100%;
   }
   .card-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
     gap: var(--space-3);
   }
-  .card-actions {
+  .card-title, .card-subtitle {
+    text-align: left !important;
     width: 100%;
-    flex-direction: column;
+  }
+  .card-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
     gap: var(--space-2);
   }
   .card-actions .form-control,
@@ -1964,9 +2005,16 @@ textarea.form-control {
   }
   .kpi-card {
     padding: var(--space-4);
+    text-align: left !important;
   }
   .kpi-value {
     font-size: 1.5rem;
+    text-align: left !important;
+    width: 100%;
+  }
+  .kpi-label {
+    text-align: left !important;
+    width: 100%;
   }
 
   /* Prediksi: accuracy-cards (4 cols → 2x2) */
@@ -1983,6 +2031,14 @@ textarea.form-control {
   }
   .stat-box {
     padding: var(--space-3);
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .stat-box-value, .stat-box-label {
+    text-align: left !important;
+    width: 100%;
   }
   .stat-box-value {
     font-size: 1rem;
@@ -2041,7 +2097,7 @@ textarea.form-control {
   .card div[style*="align-items:flex-end"] .btn {
     width: 100% !important;
     height: auto !important;
-    justify-content: center;
+    justify-content: flex-start;
   }
   .card div[style*="align-items:flex-end"] > div[style*="padding-bottom"] {
     display: none !important;
@@ -2066,8 +2122,8 @@ textarea.form-control {
   .tab-nav::-webkit-scrollbar { display: none; }
   .tab-btn {
     flex: 1;
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: flex-start;
     white-space: nowrap;
     padding: var(--space-2) var(--space-2);
     font-size: 0.78rem;
@@ -2117,7 +2173,16 @@ textarea.form-control {
   }
   .modal-footer .btn {
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
+  }
+
+  /* Left align empty states & uploads */
+  .empty-state, .upload-area {
+    text-align: left;
+    align-items: flex-start;
+  }
+  .upload-icon {
+    margin-left: 0;
   }
 
   /* Toast — bottom of screen */
