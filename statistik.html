@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistik — Data Analis</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Statistik page-specific responsive */
+    .stat-filter-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .stat-date-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .stat-date-group input[type="date"] {
+      width: 140px;
+      padding: 6px 10px;
+    }
+
+    @media (max-width: 768px) {
+      .stat-filter-row {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
+
+      .stat-filter-row select.form-control {
+        width: 100%;
+      }
+
+      .stat-date-group {
+        width: 100%;
+      }
+
+      .stat-date-group input[type="date"] {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+      }
+
+      .stat-filter-row .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      #stat-cards {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #stat-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+    @media (max-width: 360px) {
+      #stat-cards {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="app-body">
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">DA</div>
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-name">Data Analis</div>
+        <div class="sidebar-brand-sub">Data Analis Platform</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Menu Utama</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <rect x="2" y="3" width="9" height="9" rx="1" />
+            <rect x="13" y="3" width="9" height="9" rx="1" />
+            <rect x="2" y="14" width="9" height="9" rx="1" />
+            <rect x="13" y="14" width="9" height="9" rx="1" />
+          </svg></span><span class="nav-label">Dashboard</span></a>
+      <a href="input-data.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          </svg></span><span class="nav-label">Input Data</span></a>
+      <div class="sidebar-section-label">Analisis</div>
+      <a href="statistik.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg></span><span class="nav-label">Statistik Produk</span></a>
+      <a href="statistik-bb.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg></span><span class="nav-label">Stat. Bahan Baku</span></a>
+      <a href="prediksi.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+            <polyline points="17 6 23 6 23 12" />
+          </svg></span><span class="nav-label">Prediksi</span></a>
+      <div class="sidebar-section-label">Laporan</div>
+      <a href="laporan.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg></span><span class="nav-label">Laporan</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item w-full" id="logout-btn"
+        style="background:none;border:none;cursor:pointer;text-align:left;"><span class="nav-icon"><svg
+            viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg></span><span class="nav-label">Keluar</span></button>
+
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-wrapper" id="main-wrapper">
+    <header class="navbar">
+      <button class="navbar-toggle" id="sidebar-toggle"><svg viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg></button>
+      <div class="navbar-title">
+        <div class="navbar-page-title">Analisis Statistik</div>
+        <div class="navbar-breadcrumb">Statistik deskriptif, distribusi, dan korelasi data produksi</div>
+      </div>
+      <div class="navbar-actions">
+        <div class="navbar-user">
+          <div class="user-avatar" id="navbar-initials" style="width:30px;height:30px;font-size:0.72rem;">--</div><span
+            class="navbar-user-name" id="navbar-user-name">Loading...</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content fade-in">
+      <div class="page-header"
+        style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div class="page-title">Analisis Statistik</div>
+          <div class="page-subtitle">Statistik deskriptif, distribusi, dan korelasi produksi</div>
+        </div>
+        <div class="stat-filter-row">
+          <select class="form-control" id="stat-produk" style="width:150px;">
+            <option value="all">Semua Item</option>
+          </select>
+          <div class="stat-date-group">
+            <input type="date" class="form-control" id="stat-start" title="Tanggal Mulai">
+            <span class="stat-date-sep" style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">s/d</span>
+            <input type="date" class="form-control" id="stat-end" title="Tanggal Akhir">
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-hitung">
+            <svg viewBox="0 0 24 24">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+            Hitung Statistik
+          </button>
+        </div>
+      </div>
+
+      <!-- Statistik Deskriptif Cards -->
+      <div class="stat-grid mb-6" id="stat-cards">
+        <div class="stat-box" data-explain="stat-jumlah-data">
+          <div class="stat-box-label">Jumlah Data</div>
+          <div class="stat-box-value" id="s-count">-</div>
+        </div>
+        <div class="stat-box" data-explain="stat-total">
+          <div class="stat-box-label">Total</div>
+          <div class="stat-box-value" id="s-sum">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-rata-rata">
+          <div class="stat-box-label">Rata-rata</div>
+          <div class="stat-box-value" id="s-mean">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-median">
+          <div class="stat-box-label">Median</div>
+          <div class="stat-box-value" id="s-median">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-stddev">
+          <div class="stat-box-label">Std. Deviasi</div>
+          <div class="stat-box-value" id="s-stddev">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-minimum">
+          <div class="stat-box-label">Minimum</div>
+          <div class="stat-box-value" id="s-min">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-maksimum">
+          <div class="stat-box-label">Maksimum</div>
+          <div class="stat-box-value" id="s-max">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-range">
+          <div class="stat-box-label">Range</div>
+          <div class="stat-box-value" id="s-range">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-q1">
+          <div class="stat-box-label">Q1 (25%)</div>
+          <div class="stat-box-value" id="s-q1">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-q3">
+          <div class="stat-box-label">Q3 (75%)</div>
+          <div class="stat-box-value" id="s-q3">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-iqr">
+          <div class="stat-box-label">IQR</div>
+          <div class="stat-box-value" id="s-iqr">-</div>
+          <div class="stat-box-unit">pcs</div>
+        </div>
+        <div class="stat-box" data-explain="stat-cv">
+          <div class="stat-box-label">Koef. Variasi</div>
+          <div class="stat-box-value" id="s-cv">-</div>
+          <div class="stat-box-unit">%</div>
+        </div>
+      </div>
+
+      <!-- Chart Row -->
+      <div class="grid-2 mb-5">
+        <!-- Histogram -->
+        <div class="card" data-explain="distribusi-frekuensi">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Distribusi Frekuensi</div>
+              <div class="card-subtitle">Histogram jumlah produksi bulanan</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:280px;">
+            <canvas id="chart-histogram"></canvas>
+          </div>
+        </div>
+
+        <!-- Tren per produk (line) -->
+        <div class="card" data-explain="tren-bulanan-stat">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Tren Produksi Bulanan</div>
+              <div class="card-subtitle">Data produksi per bulan pada rentang tahun terpilih</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:280px;">
+            <canvas id="chart-stat-tren"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Perbandingan per Produk + Korelasi -->
+      <div class="grid-2 mb-5">
+        <!-- Bar Chart Perbandingan -->
+        <div class="card" data-explain="perbandingan-produk">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Perbandingan Total per Produk</div>
+              <div class="card-subtitle">Volume produksi total seluruh produk</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:280px;">
+            <canvas id="chart-compare"></canvas>
+          </div>
+        </div>
+
+        <!-- Radar Chart -->
+        <div class="card" data-explain="radar-performa">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Performa Relatif per Produk</div>
+              <div class="card-subtitle">Nilai ternormalisasi (perbandingan proporsional)</div>
+            </div>
+          </div>
+          <div class="chart-container" style="height:280px;">
+            <canvas id="chart-radar"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matriks Korelasi -->
+      <div class="card mb-5" data-explain="matriks-korelasi">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Matriks Korelasi Pearson</div>
+            <div class="card-subtitle">Korelasi antara volume produksi antar produk (nilai -1 hingga +1)</div>
+          </div>
+          <div>
+            <span class="badge badge-green" style="margin-right:6px;">Positif Kuat (&gt;0.7)</span>
+            <span class="badge badge-amber" style="margin-right:6px;">Lemah (0.3-0.7)</span>
+            <span class="badge badge-red">Negatif</span>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="table" id="korelasi-table">
+            <thead>
+              <tr id="korelasi-header"></tr>
+            </thead>
+            <tbody id="korelasi-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tabel Deskriptif Lengkap -->
+      <div class="card" data-explain="stat-lengkap">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Statistik Deskriptif Lengkap per Produk</div>
+            <div class="card-subtitle">Ringkasan statistik untuk setiap jenis produk</div>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Produk</th>
+                <th>N</th>
+                <th>Rata-rata</th>
+                <th>Median</th>
+                <th>Std Dev</th>
+                <th>Min</th>
+                <th>Max</th>
+                <th>CV (%)</th>
+                <th>Skewness</th>
+              </tr>
+            </thead>
+            <tbody id="stat-full-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/statistik.js"></script>
+  <script src="js/explain.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const session = initPage();
+      if (session) {
+        const currentYear = new Date().getFullYear();
+        const _td = new Date();
+        const today = `${_td.getFullYear()}-${String(_td.getMonth() + 1).padStart(2, '0')}-${String(_td.getDate()).padStart(2, '0')}`;
+        document.getElementById('stat-start').value = `${currentYear}-01-01`;
+        document.getElementById('stat-end').value = today;
+
+        // Isi dropdown item/produk secara dinamis
+        const statSel = document.getElementById('stat-produk');
+        statSel.innerHTML = '<option value="all">Semua Item</option>';
+        DataManager.getProducts().forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.name; opt.textContent = p.name;
+          statSel.appendChild(opt);
+        });
+
+        waitForChart(function () {
+          initChartDefaults();
+          hitungStatistik();
+        });
+        document.getElementById('btn-hitung').addEventListener('click', hitungStatistik);
+      }
+    });
+
+    function waitForChart(cb, tries) {
+      tries = tries || 0;
+      if (typeof Chart !== 'undefined') { cb(); return; }
+      if (tries > 30) { console.warn('Chart.js tidak ter-load.'); return; }
+      setTimeout(function () { waitForChart(cb, tries + 1); }, 100);
+    }
+
+    let histChart = null, trenStatChart = null, compareChart = null, radarChart = null;
+
+    function isDateInRange(dateStr, startStr, endStr) {
+      if (!startStr && !endStr) return true;
+      const target = new Date(dateStr).getTime();
+      if (startStr && target < new Date(startStr).getTime()) return false;
+      if (endStr && target > new Date(endStr).getTime()) return false;
+      return true;
+    }
+
+    function hitungStatistik() {
+      const produk = document.getElementById('stat-produk').value;
+      const startVal = document.getElementById('stat-start').value;
+      const endVal = document.getElementById('stat-end').value;
+      const produksi = DataManager.getProduksi();
+
+      let filtered = produksi;
+      let tahun = new Date().getFullYear();
+
+      if (startVal || endVal) {
+        filtered = filtered.filter(r => isDateInRange(r.tanggal, startVal, endVal));
+        if (startVal) tahun = new Date(startVal).getFullYear();
+        else if (endVal) tahun = new Date(endVal).getFullYear();
+      } else {
+        filtered = filtered.filter(r => new Date(r.tanggal).getFullYear() === tahun);
+      }
+
+      if (produk !== 'all') filtered = filtered.filter(r => r.produk === produk);
+
+      const data = filtered.map(r => r.jumlah);
+
+      if (!data.length) {
+        Toast.show('Tidak ada data untuk parameter yang dipilih.', 'warning');
+        return;
+      }
+
+      const stats = Statistik.summarize(data);
+      renderStatCards(stats);
+      renderHistogram(data);
+      renderTrenStat(produk, tahun);
+      renderCompareChart(tahun);
+      renderRadarChart(tahun);
+      renderKorelasiMatrix(tahun);
+      renderStatFullTable(tahun);
+    }
+
+    function renderStatCards(s) {
+      document.getElementById('s-count').textContent = DataManager.formatNumber(s.count);
+      document.getElementById('s-sum').textContent = DataManager.formatNumber(s.sum);
+      document.getElementById('s-mean').textContent = s.mean.toFixed(1);
+      document.getElementById('s-median').textContent = s.median.toFixed(1);
+      document.getElementById('s-stddev').textContent = s.stdDev.toFixed(1);
+      document.getElementById('s-min').textContent = DataManager.formatNumber(s.min);
+      document.getElementById('s-max').textContent = DataManager.formatNumber(s.max);
+      document.getElementById('s-range').textContent = DataManager.formatNumber(s.range);
+      document.getElementById('s-q1').textContent = s.q1.toFixed(1);
+      document.getElementById('s-q3').textContent = s.q3.toFixed(1);
+      document.getElementById('s-iqr').textContent = s.iqr.toFixed(1);
+      document.getElementById('s-cv').textContent = s.cv.toFixed(1);
+    }
+
+    function renderHistogram(data) {
+      histChart = destroyChart(histChart);
+      const bins = Statistik.histogramBins(data, 8);
+      const labels = bins.map(b => `${Math.round(b.from)}-${Math.round(b.to)}`);
+      const counts = bins.map(b => b.count);
+
+      const ctx = document.getElementById('chart-histogram');
+      if (!ctx) return;
+      histChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Frekuensi',
+            data: counts,
+            backgroundColor: 'rgba(59,130,246,0.65)',
+            borderColor: '#3b82f6',
+            borderWidth: 1,
+            borderRadius: 4,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } },
+            y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#64748b', stepSize: 1 }, beginAtZero: true },
+          },
+        },
+      });
+    }
+
+    function renderTrenStat(produk, tahun) {
+      trenStatChart = destroyChart(trenStatChart);
+      const labels = DataManager.MONTHS;
+
+      let datasets;
+      if (produk === 'all') {
+        datasets = DataManager.PRODUCTS.map(p => ({
+          label: p, data: DataManager.getProduksiBulanan(p, tahun),
+          color: DataManager.PRODUCT_COLORS[p],
+        }));
+      } else {
+        datasets = [{ label: produk, data: DataManager.getProduksiBulanan(produk, tahun), color: DataManager.PRODUCT_COLORS[produk] || '#3b82f6' }];
+      }
+      trenStatChart = createTrenProduksiChart('chart-stat-tren', labels, datasets);
+    }
+
+    function renderCompareChart(tahun) {
+      compareChart = destroyChart(compareChart);
+      const total = DataManager.getTotalProduksiPerProduk(tahun);
+      compareChart = createHBarChart('chart-compare', Object.keys(total), Object.values(total));
+    }
+
+    function renderRadarChart(tahun) {
+      radarChart = destroyChart(radarChart);
+      const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const maxByMonth = Array(12).fill(0);
+      DataManager.PRODUCTS.forEach(p => {
+        const monthly = DataManager.getProduksiBulanan(p, tahun);
+        monthly.forEach((v, i) => { maxByMonth[i] = Math.max(maxByMonth[i], v); });
+      });
+
+      const datasets = DataManager.PRODUCTS.map(p => {
+        const monthly = DataManager.getProduksiBulanan(p, tahun);
+        const normalized = monthly.map((v, i) => maxByMonth[i] > 0 ? Math.round((v / maxByMonth[i]) * 100) : 0);
+        return { label: p, data: normalized, color: DataManager.PRODUCT_COLORS[p] };
+      });
+
+      radarChart = createRadarChart('chart-radar', labels, datasets);
+    }
+
+    function renderKorelasiMatrix(tahun) {
+      const datasets = DataManager.PRODUCTS.map(p => ({
+        label: p,
+        data: DataManager.getProduksiBulanan(p, tahun),
+      }));
+
+      const matrix = Statistik.correlationMatrix(datasets);
+      const header = document.getElementById('korelasi-header');
+      const body = document.getElementById('korelasi-body');
+
+      header.innerHTML = '<th style="background:var(--bg-tertiary);">Produk</th>' +
+        DataManager.PRODUCTS.map(p => `<th style="background:var(--bg-tertiary);">${p}</th>`).join('');
+
+      body.innerHTML = DataManager.PRODUCTS.map((p, i) =>
+        `<tr>
+        <td style="font-weight:600;color:var(--text-primary);">${productBadge(p)}</td>
+        ${DataManager.PRODUCTS.map((q, j) => {
+          const r = matrix[i][j];
+          const bg = Statistik.corrColor(r);
+          const col = Statistik.corrTextColor(r);
+          return `<td style="background:${bg};color:${col};text-align:center;font-family:var(--font-mono);font-size:0.82rem;">
+            ${i === j ? '1.000' : r.toFixed(3)}
+          </td>`;
+        }).join('')}
+      </tr>`
+      ).join('');
+    }
+
+    function renderStatFullTable(tahun) {
+      const tbody = document.getElementById('stat-full-table');
+      tbody.innerHTML = DataManager.PRODUCTS.map(p => {
+        const data = DataManager.getProduksiBulanan(p, tahun).filter(v => v > 0);
+        const stats = Statistik.summarize(data);
+        if (!stats) return '';
+        return `<tr>
+        <td>${productBadge(p)}</td>
+        <td class="mono">${stats.count}</td>
+        <td class="mono">${stats.mean.toFixed(1)}</td>
+        <td class="mono">${stats.median.toFixed(1)}</td>
+        <td class="mono">${stats.stdDev.toFixed(1)}</td>
+        <td class="mono">${DataManager.formatNumber(stats.min)}</td>
+        <td class="mono">${DataManager.formatNumber(stats.max)}</td>
+        <td class="mono">
+          <span class="badge ${stats.cv < 20 ? 'badge-green' : stats.cv < 40 ? 'badge-amber' : 'badge-red'}">${stats.cv.toFixed(1)}%</span>
+        </td>
+        <td class="mono">${stats.skewness.toFixed(3)}</td>
+      </tr>`;
+      }).join('');
+    }
+  </script>
+</body>
+
+</html>

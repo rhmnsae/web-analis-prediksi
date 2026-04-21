@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediksi — Data Analis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Prediksi page-specific responsive */
+    #accuracy-cards {
+      grid-template-columns: repeat(4, 1fr) !important;
+    }
+
+    /* ── Parameter layout: flex row default (desktop) ── */
+    .pred-param-layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    /* ── Tablet (≤900px): 2-kolom grid yang rapih ── */
+    @media (max-width: 900px) {
+      #accuracy-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+      }
+
+      .pred-param-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        align-items: end;
+      }
+      /* Produk & Metode Forecasting → baris 1 */
+      .pred-param-layout > div:nth-child(1) { grid-column: 1; }
+      .pred-param-layout > div:nth-child(2) { grid-column: 2; }
+      /* Horizon & Periode Historis → baris 2 */
+      .pred-param-layout > div:nth-child(3) { grid-column: 1; }
+      .pred-param-layout > div:nth-child(4) { grid-column: 2; }
+      /* Tombol Jalankan → baris 3, full-width */
+      .pred-param-layout > div:nth-child(5) {
+        grid-column: 1 / -1;
+      }
+      #btn-prediksi {
+        width: 100%;
+        justify-content: center;
+      }
+      /* form-group: hapus min-width agar muat di grid */
+      .pred-param-layout .form-group,
+      .pred-param-layout > div {
+        flex: none !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        margin-bottom: 0;
+      }
+    }
+
+    /* ── Tablet portrait (≤768px) ── */
+    @media (max-width: 768px) {
+      #accuracy-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+      }
+    }
+
+    /* ── Mobile (≤480px): 1-kolom penuh ── */
+    @media (max-width: 480px) {
+      #accuracy-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 16px !important;
+      }
+      .pred-param-layout {
+        grid-template-columns: 1fr !important;
+      }
+      .pred-param-layout > div:nth-child(1),
+      .pred-param-layout > div:nth-child(2),
+      .pred-param-layout > div:nth-child(3),
+      .pred-param-layout > div:nth-child(4),
+      .pred-param-layout > div:nth-child(5) {
+        grid-column: 1 !important;
+      }
+      #btn-prediksi {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 360px) {
+      #accuracy-cards {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</head>
+<body class="app-body">
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">DA</div>
+    <div class="sidebar-brand"><div class="sidebar-brand-name">Data Analis</div><div class="sidebar-brand-sub">Data Analis Platform</div></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Menu Utama</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="9" height="9" rx="1"/><rect x="13" y="3" width="9" height="9" rx="1"/><rect x="2" y="14" width="9" height="9" rx="1"/><rect x="13" y="14" width="9" height="9" rx="1"/></svg></span><span class="nav-label">Dashboard</span></a>
+    <a href="input-data.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span><span class="nav-label">Input Data</span></a>
+    <div class="sidebar-section-label">Analisis</div>
+    <a href="statistik.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="nav-label">Statistik</span></a>
+    <a href="prediksi.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span><span class="nav-label">Prediksi</span></a>
+    <div class="sidebar-section-label">Laporan</div>
+    <a href="laporan.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="nav-label">Laporan</span></a>
+
+  </nav>
+  <div class="sidebar-footer">
+    <button class="nav-item w-full" id="logout-btn" style="background:none;border:none;cursor:pointer;text-align:left;"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span><span class="nav-label">Keluar</span></button>
+
+  </div>
+</aside>
+
+<div class="main-wrapper" id="main-wrapper">
+  <header class="navbar">
+    <button class="navbar-toggle" id="sidebar-toggle"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div class="navbar-title">
+      <div class="navbar-page-title">Prediksi &amp; Forecasting</div>
+      <div class="navbar-breadcrumb">Proyeksi produksi dan penjualan berdasarkan data historis</div>
+    </div>
+    <div class="navbar-actions">
+      <div class="navbar-user"><div class="user-avatar" id="navbar-initials" style="width:30px;height:30px;font-size:0.72rem;">--</div><span class="navbar-user-name" id="navbar-user-name">Loading...</span></div>
+    </div>
+  </header>
+
+  <main class="content fade-in">
+    <div class="page-header"><div class="page-title">Prediksi &amp; Forecasting</div><div class="page-subtitle">Proyeksi tren produksi menggunakan metode statistik</div></div>
+
+    <!-- Parameter Panel -->
+    <div class="card mb-6">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Parameter Forecasting</div>
+          <div class="card-subtitle">Atur produk, metode, horizon prediksi, dan rentang data historis</div>
+        </div>
+      </div>
+      <div class="pred-param-layout">
+        <div class="form-group" style="margin-bottom:0; flex:1; min-width:130px;">
+          <label class="form-label" for="pred-produk">Produk / Item</label>
+          <select id="pred-produk" class="form-control">
+            <!-- Diisi dinamis via JS -->
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0; flex:1.2; min-width:160px;">
+          <label class="form-label" for="pred-metode">Metode Forecasting</label>
+          <select id="pred-metode" class="form-control">
+            <option value="ma3">Moving Average (3)</option>
+            <option value="ma6">Moving Average (6)</option>
+            <option value="lr" selected>Regresi Linear</option>
+            <option value="es">Eksp. Smoothing</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0; flex:1; min-width:140px;">
+          <label class="form-label" for="pred-horizon">Horizon</label>
+          <select id="pred-horizon" class="form-control">
+            <option value="3">3 Bulan ke Depan</option>
+            <option value="6" selected>6 Bulan ke Depan</option>
+            <option value="12">12 Bulan ke Depan</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0; flex:1.5; min-width:240px;">
+          <label class="form-label">Periode Historis</label>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="date" class="form-control" id="pred-start" title="Tanggal Mulai" style="flex:1;">
+            <span style="color:var(--text-muted);font-weight:700;">-</span>
+            <input type="date" class="form-control" id="pred-end" title="Tanggal Akhir" style="flex:1;">
+          </div>
+        </div>
+        <div style="flex-shrink:0;">
+          <button class="btn btn-primary" id="btn-prediksi" style="height:38px; padding:0 18px;">
+            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            Jalankan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Akurasi Metrics -->
+    <div class="kpi-grid mb-6" id="accuracy-cards">
+      <div class="kpi-card blue" data-explain="kartu-metode">
+        <div class="kpi-top"><div class="kpi-label">Metode</div><div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div></div>
+        <div class="kpi-value" id="m-name" style="font-size:1rem;line-height:1.4;">-</div>
+      </div>
+      <div class="kpi-card green" data-explain="kartu-mae">
+        <div class="kpi-top"><div class="kpi-label">MAE</div><div class="kpi-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div></div>
+        <div class="kpi-value" id="m-mae">-</div>
+        <div class="kpi-footer"><span class="kpi-change-label">Mean Absolute Error</span></div>
+      </div>
+      <div class="kpi-card purple" data-explain="kartu-rmse">
+        <div class="kpi-top"><div class="kpi-label">RMSE</div><div class="kpi-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div></div>
+        <div class="kpi-value" id="m-rmse">-</div>
+        <div class="kpi-footer"><span class="kpi-change-label">Root Mean Squared Error</span></div>
+      </div>
+      <div class="kpi-card amber" data-explain="kartu-mape">
+        <div class="kpi-top"><div class="kpi-label">MAPE</div><div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div></div>
+        <div class="kpi-value" id="m-mape">-</div>
+        <div class="kpi-footer"><span id="m-accuracy" class="badge badge-gray">-</span></div>
+      </div>
+    </div>
+
+    <!-- Forecast Chart -->
+    <div class="card mb-6" data-explain="grafik-prediksi">
+      <div class="card-header">
+        <div>
+          <div class="card-title" id="forecast-chart-title">Grafik Prediksi</div>
+          <div class="card-subtitle">Garis biru = data aktual, garis hijau putus-putus = prediksi</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btn-export-forecast">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+      </div>
+      <div class="chart-container" style="height:340px;">
+        <canvas id="chart-forecast"></canvas>
+      </div>
+    </div>
+
+    <!-- Tabel Hasil Prediksi -->
+    <div class="card" data-explain="tabel-prediksi">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Tabel Hasil Prediksi</div>
+          <div class="card-subtitle" id="forecast-table-subtitle">Proyeksi produksi untuk periode ke depan</div>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr><th>Periode</th><th>Label</th><th>Nilai Prediksi</th><th>Batas Bawah (-10%)</th><th>Batas Atas (+10%)</th><th>Keterangan</th></tr>
+          </thead>
+          <tbody id="forecast-tbody">
+            <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">Tekan "Jalankan Prediksi" untuk melihat hasil</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/prediksi.js"></script>
+<script src="js/explain.js"></script>
+<script>
+  const session = initPage();
+  let forecastChart = null;
+  let lastForecastData = [];
+
+  if (session) {
+    // Isi dropdown produk/item secara dinamis
+    populateProductDropdown('pred-produk');
+
+    // Default date range = awal tahun ini s/d hari ini
+    const currentYear = new Date().getFullYear();
+    const _td = new Date();
+    const today = `${_td.getFullYear()}-${String(_td.getMonth()+1).padStart(2,'0')}-${String(_td.getDate()).padStart(2,'0')}`;
+    document.getElementById('pred-start').value = `${currentYear}-01-01`;
+    document.getElementById('pred-end').value   = today;
+
+    initChartDefaults();
+    runForecast(); // auto run on load
+    document.getElementById('btn-prediksi').addEventListener('click', runForecast);
+    document.getElementById('btn-export-forecast').addEventListener('click', exportForecast);
+  }
+
+  function runForecast() {
+    const produk  = document.getElementById('pred-produk').value;
+    const metode  = document.getElementById('pred-metode').value;
+    const horizon = parseInt(document.getElementById('pred-horizon').value);
+    const startVal = document.getElementById('pred-start').value;
+    const endVal   = document.getElementById('pred-end').value;
+
+    // Ambil dan filter data historis sesuai rentang tanggal TERLEBIH DAHULU
+    let allProduksi = DataManager.getProduksi().filter(r => r.produk === produk);
+    if (startVal || endVal) {
+      allProduksi = allProduksi.filter(r => {
+        const t = new Date(r.tanggal).getTime();
+        if (startVal && t < new Date(startVal).getTime()) return false;
+        if (endVal   && t > new Date(endVal).getTime())   return false;
+        return true;
+      });
+    }
+
+    // Tentukan baseYear dari DATA yang benar-benar ada (bukan dari input tanggal)
+    let baseYear;
+    const yearsFound = [...new Set(allProduksi.map(r => new Date(r.tanggal).getFullYear()))].sort();
+    if (yearsFound.length > 0) {
+      const countByYear = {};
+      allProduksi.forEach(r => {
+        const y = new Date(r.tanggal).getFullYear();
+        countByYear[y] = (countByYear[y] || 0) + r.jumlah;
+      });
+      baseYear = yearsFound.reduce((best, y) => countByYear[y] > countByYear[best] ? y : best, yearsFound[0]);
+    } else {
+      baseYear = startVal ? new Date(startVal).getFullYear() : new Date().getFullYear();
+    }
+
+    // Agregasi ke bulanan — hanya bulan yang benar-benar ada datanya
+    // Kunci: "YYYY-MM" agar urutan lintas tahun tetap benar
+    const monthMap = {};
+    allProduksi.forEach(r => {
+      const d = new Date(r.tanggal);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      monthMap[key] = (monthMap[key] || 0) + r.jumlah;
+    });
+
+    // Urutkan berdasarkan waktu (kronologis)
+    const sortedKeys = Object.keys(monthMap).sort();
+    const actual = sortedKeys.map(k => monthMap[k]);
+
+    if (!actual.length || !actual.some(v => v > 0)) {
+      Toast.show('Tidak ada data historis untuk produk dan periode ini.', 'warning');
+      forecastChart = destroyChart(forecastChart);
+      return;
+    }
+
+    // Buat label historis dari key "YYYY-MM"
+    const MONTHS_ID = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    const histLabels = sortedKeys.map(k => {
+      const [y, m] = k.split('-');
+      return `${MONTHS_ID[parseInt(m) - 1]} ${y}`;
+    });
+
+    // Ambil baseYear dari bulan terakhir data aktual untuk label prediksi
+    const lastKey  = sortedKeys[sortedKeys.length - 1];
+    const lastYear = parseInt(lastKey.split('-')[0]);
+    const lastMon  = parseInt(lastKey.split('-')[1]); // 1-based
+
+    // Generate forecast
+    const result = Prediksi.generateForecast(actual, metode, horizon);
+    lastForecastData = result.forecast;
+
+    // Update accuracy cards
+    document.getElementById('m-name').textContent  = result.modelInfo.name || metode;
+    document.getElementById('m-mae').textContent   = result.mae  !== null ? result.mae.toFixed(1)  : 'N/A';
+    document.getElementById('m-rmse').textContent  = result.rmse !== null ? result.rmse.toFixed(1) : 'N/A';
+    document.getElementById('m-mape').textContent  = result.mape !== null ? result.mape.toFixed(1) + '%' : 'N/A';
+
+    const interp = Prediksi.interpretMape(result.mape);
+    const mapeEl = document.getElementById('m-accuracy');
+    mapeEl.textContent  = interp.label;
+    mapeEl.className    = 'badge ' + interp.color;
+
+    // Label prediksi: lanjutkan dari bulan terakhir data aktual
+    const futureLabels = [];
+    let fy = lastYear, fm = lastMon + 1;
+    for (let i = 0; i < horizon; i++) {
+      if (fm > 12) { fm = 1; fy++; }
+      futureLabels.push(`${MONTHS_ID[fm - 1]} ${fy}`);
+      fm++;
+    }
+
+    const allLabels = [...histLabels, ...futureLabels];
+
+    document.getElementById('forecast-chart-title').textContent = `Prediksi Produksi ${produk} — ${horizon} Bulan ke Depan`;
+    document.getElementById('forecast-table-subtitle').textContent = `Proyeksi produksi ${produk} untuk ${horizon} bulan berikutnya`;
+
+    // Render chart
+    forecastChart = destroyChart(forecastChart);
+    forecastChart = createForecastChart('chart-forecast', allLabels, actual, result.forecast, actual.length);
+
+    // Render table
+    renderForecastTable(result.forecast, futureLabels, produk);
+  }
+
+
+
+
+  function renderForecastTable(forecastValues, labels, produk) {
+    const tbody = document.getElementById('forecast-tbody');
+    tbody.innerHTML = forecastValues.map((v, i) => {
+      const lower = Math.max(0, Math.round(v * 0.9));
+      const upper = Math.round(v * 1.1);
+      const trend = i === 0 ? '' : forecastValues[i] > forecastValues[i-1]
+        ? '<span class="badge badge-green">Naik</span>'
+        : forecastValues[i] < forecastValues[i-1]
+          ? '<span class="badge badge-red">Turun</span>'
+          : '<span class="badge badge-gray">Stabil</span>';
+      return `<tr>
+        <td class="mono" style="color:var(--text-muted);">+${i+1}</td>
+        <td style="font-weight:500;">${labels[i]}</td>
+        <td class="mono" style="color:var(--blue-400);font-weight:700;">${DataManager.formatNumber(v)} pcs</td>
+        <td class="mono">${DataManager.formatNumber(lower)} pcs</td>
+        <td class="mono">${DataManager.formatNumber(upper)} pcs</td>
+        <td>${trend}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function exportForecast() {
+    if (!lastForecastData.length) { Toast.show('Tidak ada data prediksi.', 'warning'); return; }
+    const produk  = document.getElementById('pred-produk').value;
+    const horizon = lastForecastData.length;
+    const labels  = generateFutureLabels(horizon);
+    const rows    = lastForecastData.map((v, i) => ({
+      periode:       i + 1,
+      label:         labels[i],
+      prediksi_pcs:  v,
+      batas_bawah:   Math.max(0, Math.round(v * 0.9)),
+      batas_atas:    Math.round(v * 1.1),
+      produk,
+    }));
+    downloadCSV(rows, `prediksi_${produk.toLowerCase().replace(' ','-')}.csv`);
+  }
+</script>
+</body>
+</html>

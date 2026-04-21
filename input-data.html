@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Input Data — Data Analis</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Input Data page-specific responsive */
+    .input-header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card-search-wrap {
+      width: 220px;
+    }
+
+    /* ── Produk color swatch ── */
+    .prod-color-swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      flex-shrink: 0;
+    }
+
+    .prod-color-picker-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .prod-color-picker-wrap input[type="color"] {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-tertiary);
+      cursor: pointer;
+      padding: 2px;
+    }
+
+    /* Kelola Produk grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .product-item-card {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: var(--transition-fast);
+    }
+
+    .product-item-card:hover {
+      border-color: var(--border-medium);
+      background: var(--bg-elevated);
+    }
+
+    .product-item-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .product-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .product-item-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product-item-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .product-item-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .input-header-actions {
+        width: 100%;
+      }
+
+      .input-header-actions .btn {
+        flex: 1;
+        justify-content: center;
+      }
+
+      .card-search-wrap {
+        width: 100%;
+      }
+
+      .card-actions select.form-control {
+        width: 100% !important;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .input-header-actions {
+        flex-direction: column;
+      }
+
+      .input-header-actions .btn {
+        width: 100%;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body class="app-body">
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">DA</div>
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-name">Data Analis</div>
+        <div class="sidebar-brand-sub">Data Analis Platform</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Menu Utama</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <rect x="2" y="3" width="9" height="9" rx="1" />
+            <rect x="13" y="3" width="9" height="9" rx="1" />
+            <rect x="2" y="14" width="9" height="9" rx="1" />
+            <rect x="13" y="14" width="9" height="9" rx="1" />
+          </svg></span><span class="nav-label">Dashboard</span></a>
+      <a href="input-data.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          </svg></span><span class="nav-label">Input Data</span></a>
+      <div class="sidebar-section-label">Analisis</div>
+      <a href="statistik.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg></span><span class="nav-label">Statistik Produk</span></a>
+      <a href="statistik-bb.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg></span><span class="nav-label">Stat. Bahan Baku</span></a>
+      <a href="prediksi.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+            <polyline points="17 6 23 6 23 12" />
+          </svg></span><span class="nav-label">Prediksi</span></a>
+      <div class="sidebar-section-label">Laporan</div>
+      <a href="laporan.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg></span><span class="nav-label">Laporan</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item w-full" id="logout-btn"
+        style="background:none;border:none;cursor:pointer;text-align:left;">
+        <span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg></span>
+        <span class="nav-label">Keluar</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-wrapper" id="main-wrapper">
+    <header class="navbar">
+      <button class="navbar-toggle" id="sidebar-toggle"><svg viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg></button>
+      <div class="navbar-title">
+        <div class="navbar-page-title">Input Data</div>
+        <div class="navbar-breadcrumb">Pengaturan data produksi, penjualan, bahan baku & kelola item</div>
+      </div>
+      <div class="navbar-actions">
+        <div class="navbar-user">
+          <div class="user-avatar" id="navbar-initials" style="width:30px;height:30px;font-size:0.72rem;">--</div>
+          <span class="navbar-user-name" id="navbar-user-name">Loading...</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content fade-in">
+      <div class="page-header"
+        style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div class="page-title">Input &amp; Rekap Data</div>
+          <div class="page-subtitle">Masukkan dan kelola data transaksi serta daftar item/produk</div>
+        </div>
+        <div class="input-header-actions">
+          <button class="btn btn-secondary btn-sm" id="btn-export-csv">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export CSV
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-tambah-data">
+            <svg viewBox="0 0 24 24">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Tambah Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-nav">
+        <button class="tab-btn" data-tab="tab-produksi">Data Produksi</button>
+        <button class="tab-btn" data-tab="tab-penjualan">Data Penjualan</button>
+        <button class="tab-btn" data-tab="tab-bahanbaku">Bahan Baku</button>
+        <button class="tab-btn" data-tab="tab-produk">Kelola Item</button>
+      </div>
+
+      <!-- TAB: Produksi -->
+      <div class="tab-content" id="tab-produksi">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Data Produksi</div>
+              <div class="card-subtitle" id="produksi-count">0 entri</div>
+            </div>
+            <div class="card-actions">
+              <div class="search-wrapper card-search-wrap">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" class="form-control" id="produksi-search" placeholder="Cari data..."
+                  style="padding-left:36px;">
+              </div>
+              <select class="form-control" id="produksi-filter-produk" style="width:150px;">
+                <option value="">Semua Item</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tanggal</th>
+                  <th>Item</th>
+                  <th>Realisasi</th>
+                  <th>Target</th>
+                  <th>Efisiensi</th>
+                  <th>Keterangan</th>
+                  <th style="text-align:center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="produksi-tbody">
+                <tr>
+                  <td colspan="8" style="text-align:center;padding:32px;color:var(--text-muted);">Memuat data...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Penjualan -->
+      <div class="tab-content" id="tab-penjualan">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Data Penjualan</div>
+              <div class="card-subtitle" id="penjualan-count">0 entri</div>
+            </div>
+            <div class="card-actions">
+              <div class="search-wrapper card-search-wrap">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" class="form-control" id="penjualan-search" placeholder="Cari data..."
+                  style="padding-left:36px;">
+              </div>
+              <select class="form-control" id="penjualan-filter-produk" style="width:150px;">
+                <option value="">Semua Item</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tanggal</th>
+                  <th>Item</th>
+                  <th>Jumlah Terjual</th>
+                  <th>Harga Satuan</th>
+                  <th>Total Nilai</th>
+                  <th style="text-align:center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="penjualan-tbody">
+                <tr>
+                  <td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">Memuat data...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Bahan Baku -->
+      <div class="tab-content" id="tab-bahanbaku">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Data Bahan Baku</div>
+              <div class="card-subtitle" id="bb-count">0 entri</div>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tanggal</th>
+                  <th>Material</th>
+                  <th>Masuk</th>
+                  <th>Keluar</th>
+                  <th>Stok</th>
+                  <th>Satuan</th>
+                  <th>Supplier</th>
+                  <th style="text-align:center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="bb-tbody">
+                <tr>
+                  <td colspan="9" style="text-align:center;padding:32px;color:var(--text-muted);">Memuat data...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Kelola Item/Produk -->
+      <div class="tab-content" id="tab-produk">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Kelola Item / Produk</div>
+              <div class="card-subtitle">Tambah, edit, atau hapus item yang tersedia di seluruh aplikasi</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary btn-sm" id="btn-tambah-produk">
+                <svg viewBox="0 0 24 24">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Tambah Item
+              </button>
+            </div>
+          </div>
+
+          <!-- Info banner -->
+          <div
+            style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:var(--radius-md);padding:12px 16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;">
+            <svg viewBox="0 0 24 24"
+              style="width:18px;height:18px;stroke:#60a5fa;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;margin-top:1px;">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <div style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
+              Item yang ditambahkan di sini akan otomatis muncul di semua dropdown di seluruh halaman (Dashboard,
+              Statistik, Prediksi, Laporan). Hapus item tidak menghapus data historis yang sudah ada.
+            </div>
+          </div>
+
+          <div class="product-grid" id="product-grid">
+            <!-- Diisi JS -->
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL: Tambah/Edit Data Produksi/Penjualan/Bahan Baku -->
+  <div class="modal-overlay" id="modal-tambah">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Tambah Data</h3>
+        <button class="modal-close" id="modal-close-btn">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Form Produksi -->
+      <div id="form-produksi-content">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="f-tanggal">Tanggal</label>
+            <input type="date" id="f-tanggal" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-produk">Item / Produk</label>
+            <select id="f-produk" class="form-control">
+              <option value="">-- Pilih Item --</option>
+            </select>
+            <div id="f-produk-helper" style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="f-jumlah">Jumlah Realisasi</label>
+            <input type="number" id="f-jumlah" class="form-control" placeholder="0" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-target">Target</label>
+            <input type="number" id="f-target" class="form-control" placeholder="0" min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-keterangan">Keterangan</label>
+          <input type="text" id="f-keterangan" class="form-control" placeholder="Keterangan tambahan (opsional)">
+        </div>
+      </div>
+
+      <!-- Form Penjualan -->
+      <div id="form-penjualan-content" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fp-tanggal">Tanggal</label>
+            <input type="date" id="fp-tanggal" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fp-produk">Item / Produk</label>
+            <select id="fp-produk" class="form-control">
+              <option value="">-- Pilih Item --</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fp-jumlah">Jumlah Terjual</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input type="number" id="fp-jumlah" class="form-control" placeholder="0" min="0" style="flex:1;">
+              <span id="fp-satuan-label" style="color:var(--text-muted); font-size:0.9rem; min-width:40px;">pcs</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fp-harga">Harga Satuan</label>
+            <input type="text" id="fp-harga-display" class="form-control" readonly style="background:var(--bg-secondary); color:var(--text-muted); cursor:not-allowed;" value="Pilih item">
+            <input type="hidden" id="fp-harga">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fp-keterangan">Keterangan</label>
+          <input type="text" id="fp-keterangan" class="form-control" placeholder="Keterangan tambahan (opsional)">
+        </div>
+      </div>
+
+      <!-- Form Bahan Baku -->
+      <div id="form-bb-content" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fbb-tanggal">Tanggal</label>
+            <input type="date" id="fbb-tanggal" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fbb-material">Nama Material</label>
+            <input type="text" id="fbb-material" class="form-control" placeholder="Nama bahan baku">
+          </div>
+        </div>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label" for="fbb-masuk">Masuk</label>
+            <input type="number" id="fbb-masuk" class="form-control" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fbb-keluar">Keluar</label>
+            <input type="number" id="fbb-keluar" class="form-control" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fbb-satuan">Satuan</label>
+            <select id="fbb-satuan" class="form-control">
+              <option>meter</option>
+              <option>kg</option>
+              <option>rol</option>
+              <option>pcs</option>
+              <option>lusin</option>
+              <option>liter</option>
+              <option>unit</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fbb-supplier">Supplier</label>
+          <input type="text" id="fbb-supplier" class="form-control" placeholder="Nama supplier">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="modal-cancel-btn">Batal</button>
+        <button class="btn btn-primary" id="modal-save-btn">Simpan Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Tambah/Edit Item/Produk -->
+  <div class="modal-overlay" id="modal-produk">
+    <div class="modal" style="max-width:460px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-produk-title">Tambah Item Baru</h3>
+        <button class="modal-close" id="modal-produk-close">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <input type="hidden" id="prod-edit-id">
+
+      <div class="form-group">
+        <label class="form-label" for="prod-nama">Nama Item / Produk <span
+            style="color:var(--red-400);">*</span></label>
+        <input type="text" id="prod-nama" class="form-control" placeholder="Contoh: Laptop, Beras, Jasa Konsultasi">
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label" for="prod-harga">Harga Satuan (Rp)</label>
+          <input type="number" id="prod-harga" class="form-control" placeholder="0" min="0">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label" for="prod-satuan">Satuan</label>
+          <input type="text" id="prod-satuan" class="form-control" placeholder="pcs, kg, unit, ...">
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:16px;">
+        <label class="form-label">Warna Badge &amp; Grafik</label>
+        <div class="prod-color-picker-wrap">
+          <input type="color" id="prod-warna" value="#3b82f6">
+          <span style="font-size:0.82rem;color:var(--text-muted);">Warna yang dipilih akan muncul di badge item dan
+            grafik</span>
+        </div>
+        <!-- Palette cepat -->
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;" id="color-palette-btns"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="modal-produk-cancel">Batal</button>
+        <button class="btn btn-primary" id="modal-produk-save">Simpan Item</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const session = initPage();
+    if (session) {
+      initTabs();
+      initProductDropdowns();
+      renderAll();
+      setupListeners();
+    }
+
+    let activeTab = 'produksi';
+
+    /* ─── Isi semua dropdown produk ─── */
+    function initProductDropdowns() {
+      populateProductDropdown('produksi-filter-produk', true);
+      populateProductDropdown('penjualan-filter-produk', true);
+      populateProductDropdown('f-produk');
+      populateProductDropdown('fp-produk');
+    }
+
+    function setupListeners() {
+      // Tab switch
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.dataset.tab;
+          if (tabId === 'tab-produksi') activeTab = 'produksi';
+          else if (tabId === 'tab-penjualan') activeTab = 'penjualan';
+          else if (tabId === 'tab-bahanbaku') activeTab = 'bahanbaku';
+          else activeTab = 'produk';
+          updateModalForm();
+
+          // Refresh product grid saat tab produk dibuka
+          if (tabId === 'tab-produk') renderProductGrid();
+        });
+      });
+
+      // Search & filter
+      document.getElementById('produksi-search').addEventListener('input', debounce(() => renderProduksiTable(), 250));
+      document.getElementById('penjualan-search').addEventListener('input', debounce(() => renderPenjualanTable(), 250));
+      document.getElementById('produksi-filter-produk').addEventListener('change', renderProduksiTable);
+      document.getElementById('penjualan-filter-produk').addEventListener('change', renderPenjualanTable);
+
+      // Auto-load satuan and harga on product selection
+      document.getElementById('f-produk').addEventListener('change', function(e) {
+        const val = e.target.value;
+        const helper = document.getElementById('f-produk-helper');
+        if (!val) { helper.textContent = ''; return; }
+        const unit = DataManager.getProductUnit(val);
+        helper.textContent = `Satuan produksi: ${unit}`;
+      });
+
+      document.getElementById('fp-produk').addEventListener('change', function(e) {
+        const val = e.target.value;
+        const hargaInput = document.getElementById('fp-harga');
+        const hargaDisplay = document.getElementById('fp-harga-display');
+        const labelSatuan = document.getElementById('fp-satuan-label');
+        if (!val) { 
+          hargaInput.value = ''; 
+          hargaDisplay.value = 'Pilih item'; 
+          labelSatuan.textContent = 'pcs';
+          return; 
+        }
+        const harga = DataManager.getHargaSatuan(val);
+        const unit = DataManager.getProductUnit(val);
+        hargaInput.value = harga;
+        hargaDisplay.value = DataManager.formatCurrency(harga);
+        labelSatuan.textContent = unit;
+      });
+
+      // Modal data
+      document.getElementById('btn-tambah-data').addEventListener('click', openDataModal);
+      document.getElementById('modal-close-btn').addEventListener('click', () => Modal.close('modal-tambah'));
+      document.getElementById('modal-cancel-btn').addEventListener('click', () => Modal.close('modal-tambah'));
+      document.getElementById('modal-save-btn').addEventListener('click', saveData);
+      document.getElementById('modal-tambah').addEventListener('click', e => {
+        if (e.target === document.getElementById('modal-tambah')) Modal.close('modal-tambah');
+      });
+
+      // Modal produk
+      document.getElementById('btn-tambah-produk').addEventListener('click', () => openProdukModal());
+      document.getElementById('modal-produk-close').addEventListener('click', () => Modal.close('modal-produk'));
+      document.getElementById('modal-produk-cancel').addEventListener('click', () => Modal.close('modal-produk'));
+      document.getElementById('modal-produk-save').addEventListener('click', saveProduk);
+      document.getElementById('modal-produk').addEventListener('click', e => {
+        if (e.target === document.getElementById('modal-produk')) Modal.close('modal-produk');
+      });
+
+      // Export
+      document.getElementById('btn-export-csv').addEventListener('click', exportActive);
+    }
+
+    /* ─── Modal data update form by tab ─── */
+    function updateModalForm() {
+      const labels = { produksi: 'Data Produksi', penjualan: 'Data Penjualan', bahanbaku: 'Bahan Baku' };
+      document.getElementById('modal-title').textContent = 'Tambah ' + (labels[activeTab] || '');
+      document.getElementById('form-produksi-content').style.display = activeTab === 'produksi' ? '' : 'none';
+      document.getElementById('form-penjualan-content').style.display = activeTab === 'penjualan' ? '' : 'none';
+      document.getElementById('form-bb-content').style.display = activeTab === 'bahanbaku' ? '' : 'none';
+    }
+
+    function openDataModal() {
+      updateModalForm();
+      const today = new Date().toISOString().split('T')[0];
+      ['f-tanggal', 'fp-tanggal', 'fbb-tanggal'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = today;
+      });
+      // Refresh dropdown produk setiap buka modal
+      populateProductDropdown('f-produk');
+      populateProductDropdown('fp-produk');
+      Modal.open('modal-tambah');
+    }
+
+    function saveData() {
+      if (activeTab === 'produksi') {
+        const tanggal = document.getElementById('f-tanggal').value;
+        const produk = document.getElementById('f-produk').value;
+        const jumlah = parseInt(document.getElementById('f-jumlah').value) || 0;
+        const target = parseInt(document.getElementById('f-target').value) || 0;
+        const keterangan = document.getElementById('f-keterangan').value;
+        if (!tanggal || !produk || !jumlah) { Toast.show('Harap isi semua field wajib.', 'warning'); return; }
+        const satuan = DataManager.getProductUnit(produk);
+        DataManager.addProduksi({ tanggal, produk, jumlah, target, satuan, keterangan });
+        renderProduksiTable();
+        Toast.show('Data produksi berhasil disimpan.', 'success');
+
+      } else if (activeTab === 'penjualan') {
+        const tanggal = document.getElementById('fp-tanggal').value;
+        const produk = document.getElementById('fp-produk').value;
+        const jumlah = parseInt(document.getElementById('fp-jumlah').value) || 0;
+        const hargaSatuan = DataManager.getHargaSatuan(produk);
+        const satuan = DataManager.getProductUnit(produk);
+        const keterangan = document.getElementById('fp-keterangan').value;
+        if (!tanggal || !produk || !jumlah) { Toast.show('Harap isi semua field wajib.', 'warning'); return; }
+        DataManager.addPenjualan({ tanggal, produk, jumlah, hargaSatuan, satuan, keterangan });
+        renderPenjualanTable();
+        Toast.show('Data penjualan berhasil disimpan.', 'success');
+
+      } else {
+        const tanggal = document.getElementById('fbb-tanggal').value;
+        const material = document.getElementById('fbb-material').value;
+        const masuk = parseInt(document.getElementById('fbb-masuk').value) || 0;
+        const keluar = parseInt(document.getElementById('fbb-keluar').value) || 0;
+        const satuan = document.getElementById('fbb-satuan').value;
+        const supplier = document.getElementById('fbb-supplier').value;
+        if (!tanggal || !material) { Toast.show('Harap isi semua field wajib.', 'warning'); return; }
+        DataManager.addBahanBaku({ tanggal, material, masuk, keluar, stok: masuk - keluar, satuan, supplier });
+        renderBahanBakuTable();
+        Toast.show('Data bahan baku berhasil disimpan.', 'success');
+      }
+      Modal.close('modal-tambah');
+    }
+
+    /* ─── Produk / Item Modal ─── */
+    function openProdukModal(editId = null) {
+      document.getElementById('prod-edit-id').value = editId || '';
+      document.getElementById('modal-produk-title').textContent = editId ? 'Edit Item' : 'Tambah Item Baru';
+
+      if (editId) {
+        const prod = DataManager.getProducts().find(p => p.id === editId);
+        if (prod) {
+          document.getElementById('prod-nama').value = prod.name;
+          document.getElementById('prod-harga').value = prod.harga || 0;
+          document.getElementById('prod-satuan').value = prod.unit || 'pcs';
+          document.getElementById('prod-warna').value = prod.color || '#3b82f6';
+        }
+      } else {
+        document.getElementById('prod-nama').value = '';
+        document.getElementById('prod-harga').value = '';
+        document.getElementById('prod-satuan').value = 'pcs';
+        document.getElementById('prod-warna').value = DataManager.getNextColor();
+      }
+
+      // Render color palette
+      renderColorPalette();
+      Modal.open('modal-produk');
+      setTimeout(() => document.getElementById('prod-nama').focus(), 100);
+    }
+
+    function renderColorPalette() {
+      const wrap = document.getElementById('color-palette-btns');
+      wrap.innerHTML = DataManager.COLOR_PALETTE.map(c => `
+        <button type="button" onclick="document.getElementById('prod-warna').value='${c}'"
+          style="width:22px;height:22px;border-radius:50%;background:${c};border:2px solid rgba(255,255,255,0.2);
+          cursor:pointer;flex-shrink:0;transition:transform 0.15s;"
+          onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''">
+        </button>
+      `).join('');
+    }
+
+    function saveProduk() {
+      const editId = document.getElementById('prod-edit-id').value;
+      const name = document.getElementById('prod-nama').value.trim();
+      const harga = parseInt(document.getElementById('prod-harga').value) || 0;
+      const unit = document.getElementById('prod-satuan').value.trim() || 'pcs';
+      const color = document.getElementById('prod-warna').value;
+
+      if (!name) { Toast.show('Nama item tidak boleh kosong.', 'warning'); return; }
+
+      if (editId) {
+        DataManager.updateProduct(editId, { name, harga, unit, color });
+        Toast.show(`Item "${name}" berhasil diperbarui.`, 'success');
+      } else {
+        const result = DataManager.addProduct({ name, color, harga, unit });
+        if (result.error) { Toast.show(result.error, 'error'); return; }
+        Toast.show(`Item "${name}" berhasil ditambahkan.`, 'success');
+      }
+
+      Modal.close('modal-produk');
+      renderProductGrid();
+      // Refresh semua dropdown
+      initProductDropdowns();
+    }
+
+    /* ─── Render Product Grid ─── */
+    function renderProductGrid() {
+      const products = DataManager.getProducts();
+      const grid = document.getElementById('product-grid');
+
+      if (!products.length) {
+        grid.innerHTML = UIHelper.emptyState('Belum Ada Item', 'Klik "+ Tambah Item" untuk membuat item pertama yang akan muncul di seluruh aplikasi.');
+        return;
+      }
+
+      grid.innerHTML = products.map(p => {
+        const initial = p.name.charAt(0).toUpperCase();
+        const hargaStr = p.harga ? DataManager.formatCurrency(p.harga) : '-';
+        return `
+        <div class="product-item-card">
+          <div class="product-item-icon" style="background:${p.color};">${initial}</div>
+          <div class="product-item-info">
+            <div class="product-item-name">${p.name}</div>
+            <div class="product-item-meta">${hargaStr} / ${p.unit || 'pcs'}</div>
+          </div>
+          <div class="product-item-actions">
+            <button class="btn btn-icon btn-ghost btn-sm" title="Edit" onclick="openProdukModal('${p.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn btn-icon btn-ghost btn-sm" title="Hapus" style="color:var(--red-400);" onclick="hapusProduk('${p.id}','${p.name}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function hapusProduk(id, name) {
+      Modal.confirm({
+        title: 'Hapus Item',
+        message: `Item "<strong>${name}</strong>" akan dihapus dari daftar. Data produksi/penjualan yang menggunakan item ini <strong>tidak</strong> ikut terhapus. Lanjutkan?`,
+        danger: true,
+        onConfirm: () => {
+          DataManager.deleteProduct(id);
+          renderProductGrid();
+          initProductDropdowns();
+          Toast.show(`Item "${name}" dihapus.`, 'success');
+        },
+      });
+    }
+
+    /* ─── Export ─── */
+    function exportActive() {
+      if (activeTab === 'produksi') downloadCSV(DataManager.getProduksi(), 'produksi.csv');
+      else if (activeTab === 'penjualan') downloadCSV(DataManager.getPenjualan(), 'penjualan.csv');
+      else if (activeTab === 'bahanbaku') downloadCSV(DataManager.getBahanBaku(), 'bahan-baku.csv');
+      else downloadCSV(DataManager.getProducts(), 'daftar-item.csv');
+    }
+
+    /* ─── Render All Tables ─── */
+    function renderAll() {
+      renderProduksiTable();
+      renderPenjualanTable();
+      renderBahanBakuTable();
+      renderProductGrid();
+    }
+
+    function renderProduksiTable() {
+      let data = DataManager.getProduksi();
+      const search = document.getElementById('produksi-search').value.toLowerCase();
+      const filter = document.getElementById('produksi-filter-produk').value;
+      if (search) data = data.filter(r => r.produk.toLowerCase().includes(search) || r.id.toLowerCase().includes(search) || (r.keterangan || '').toLowerCase().includes(search));
+      if (filter) data = data.filter(r => r.produk === filter);
+      document.getElementById('produksi-count').textContent = `${data.length} entri`;
+
+      const tbody = document.getElementById('produksi-tbody');
+      if (!data.length) {
+        tbody.innerHTML = UIHelper.emptyTable(8, 'Data Produksi Kosong', 'Tidak ada data yang cocok.');
+        return;
+      }
+      tbody.innerHTML = data.map(r => {
+        const pct = r.target > 0 ? ((r.jumlah / r.target) * 100) : 0;
+        const status = pct >= 100 ? `<span class="badge badge-green">${pct.toFixed(1)}%</span>`
+          : pct >= 85 ? `<span class="badge badge-amber">${pct.toFixed(1)}%</span>`
+            : `<span class="badge badge-red">${pct.toFixed(1)}%</span>`;
+        return `<tr>
+          <td class="mono" style="color:var(--text-muted);font-size:0.78rem;">${r.id}</td>
+          <td class="muted">${DataManager.formatDate(r.tanggal)}</td>
+          <td>${productBadge(r.produk)}</td>
+          <td class="mono">${DataManager.formatNumber(r.jumlah)} ${r.satuan || 'pcs'}</td>
+          <td class="mono">${DataManager.formatNumber(r.target)} ${r.satuan || 'pcs'}</td>
+          <td>${status}</td>
+          <td style="color:var(--text-muted);font-size:0.82rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.keterangan || '-'}</td>
+          <td style="text-align:center;">
+            <button class="btn btn-icon btn-ghost" title="Hapus" onclick="hapusProduksi('${r.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            </button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function hapusProduksi(id) {
+      Modal.confirm({
+        title: 'Hapus Data', message: `Data produksi <strong>${id}</strong> akan dihapus. Lanjutkan?`, danger: true,
+        onConfirm: () => { DataManager.deleteProduksi(id); renderProduksiTable(); Toast.show('Data dihapus.', 'success'); }
+      });
+    }
+
+    function renderPenjualanTable() {
+      let data = DataManager.getPenjualan();
+      const search = document.getElementById('penjualan-search').value.toLowerCase();
+      const filter = document.getElementById('penjualan-filter-produk').value;
+      if (search) data = data.filter(r => r.produk.toLowerCase().includes(search) || r.id.toLowerCase().includes(search));
+      if (filter) data = data.filter(r => r.produk === filter);
+      document.getElementById('penjualan-count').textContent = `${data.length} entri`;
+
+      const tbody = document.getElementById('penjualan-tbody');
+      if (!data.length) { tbody.innerHTML = UIHelper.emptyTable(7, 'Data Penjualan Kosong', 'Tidak ada data yang cocok.'); return; }
+      tbody.innerHTML = data.map(r => `<tr>
+        <td class="mono" style="color:var(--text-muted);font-size:0.78rem;">${r.id}</td>
+        <td class="muted">${DataManager.formatDate(r.tanggal)}</td>
+        <td>${productBadge(r.produk)}</td>
+        <td class="mono">${DataManager.formatNumber(r.jumlah)} ${r.satuan || 'pcs'}</td>
+        <td class="mono">${DataManager.formatCurrency(r.hargaSatuan)}</td>
+        <td class="mono" style="color:var(--green-400);font-weight:600;">${DataManager.formatCurrency(r.jumlah * r.hargaSatuan)}</td>
+        <td style="text-align:center;">
+          <button class="btn btn-icon btn-ghost" title="Hapus" onclick="hapusPenjualan('${r.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+          </button>
+        </td>
+      </tr>`).join('');
+    }
+
+    function hapusPenjualan(id) {
+      Modal.confirm({
+        title: 'Hapus Data', message: `Data penjualan <strong>${id}</strong> akan dihapus. Lanjutkan?`, danger: true,
+        onConfirm: () => { DataManager.deletePenjualan(id); renderPenjualanTable(); Toast.show('Data dihapus.', 'success'); }
+      });
+    }
+
+    function renderBahanBakuTable() {
+      const data = DataManager.getBahanBaku();
+      document.getElementById('bb-count').textContent = `${data.length} entri`;
+      const tbody = document.getElementById('bb-tbody');
+      if (!data.length) { tbody.innerHTML = UIHelper.emptyTable(9, 'Data Bahan Baku Kosong', 'Belum ada data bahan baku.'); return; }
+      tbody.innerHTML = data.map(r => {
+        const stokStyle = r.stok < 500 ? 'color:var(--red-400);font-weight:600;' : '';
+        return `<tr>
+          <td class="mono" style="color:var(--text-muted);font-size:0.78rem;">${r.id}</td>
+          <td class="muted">${DataManager.formatDate(r.tanggal)}</td>
+          <td style="font-weight:500;">${r.material}</td>
+          <td class="mono">${DataManager.formatNumber(r.masuk)}</td>
+          <td class="mono">${DataManager.formatNumber(r.keluar)}</td>
+          <td class="mono" style="${stokStyle}">${DataManager.formatNumber(r.stok)}</td>
+          <td><span class="badge badge-gray">${r.satuan}</span></td>
+          <td style="color:var(--text-secondary);font-size:0.82rem;">${r.supplier || '-'}</td>
+          <td style="text-align:center;">
+            <button class="btn btn-icon btn-ghost" title="Hapus" onclick="hapusBB('${r.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+            </button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function hapusBB(id) {
+      Modal.confirm({
+        title: 'Hapus Data', message: `Data bahan baku <strong>${id}</strong> akan dihapus. Lanjutkan?`, danger: true,
+        onConfirm: () => { DataManager.deleteBahanBaku(id); renderBahanBakuTable(); Toast.show('Data dihapus.', 'success'); }
+      });
+    }
+  </script>
+</body>
+
+</html>
