@@ -644,10 +644,21 @@ ul, ol {
 
 .card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   margin-bottom: var(--space-5);
   gap: var(--space-4);
+  flex-wrap: nowrap !important;
+}
+
+.card-header > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-header .btn {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .card-title {

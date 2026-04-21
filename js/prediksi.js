@@ -7,11 +7,27 @@ const Prediksi = (() => {
 
   /* ─── 1. Moving Average (Simple) ─── */
   function movingAverage(data, period) {
-    if (data.length < period) return [];
+    const p = Math.min(period, data.length);
+    if (p === 0) return [];
     const result = [];
-    for (let i = period - 1; i < data.length; i++) {
-      const window = data.slice(i - period + 1, i + 1);
-      result.push(window.reduce((a, b) => a + b, 0) / period);
+    for (let i = p - 1; i < data.length; i++) {
+      const window = data.slice(i - p + 1, i + 1);
+      result.push(window.reduce((a, b) => a + b, 0) / p);
+    }
+    return result;
+  }
+
+  /* ─── 1b. Weighted Moving Average (WMA) ─── */
+  function weightedMovingAverage(data, period) {
+    const p = Math.min(period, data.length);
+    if (p === 0) return [];
+    const result = [];
+    const weightSum = (p * (p + 1)) / 2;
+    for (let i = p - 1; i < data.length; i++) {
+      const window = data.slice(i - p + 1, i + 1);
+      let wma = 0;
+      window.forEach((val, idx) => { wma += val * (idx + 1); });
+      result.push(wma / weightSum);
     }
     return result;
   }
@@ -24,6 +40,23 @@ const Prediksi = (() => {
       result.push(alpha * data[i] + (1 - alpha) * result[i - 1]);
     }
     return result;
+  }
+
+  /* ─── 2b. Double Exponential Smoothing (Holt's Linear Trend) ─── */
+  function doubleExponentialSmoothing(data, alpha = 0.3, beta = 0.2) {
+    if (data.length < 2) return { level: data.slice(), trend: data.map(()=>0), fitted: data.slice() };
+    const L = [data[0]];
+    const T = [data[1] - data[0]];
+    const F = [data[0]]; 
+    
+    for (let i = 1; i < data.length; i++) {
+      const Lt = alpha * data[i] + (1 - alpha) * (L[i-1] + T[i-1]);
+      const Tt = beta * (Lt - L[i-1]) + (1 - beta) * T[i-1];
+      L.push(Lt);
+      T.push(Tt);
+      F.push(Math.max(0, Math.round(Lt + Tt)));
+    }
+    return { level: L, trend: T, fitted: F };
   }
 
   /* ─── 3. Linear Regression ─── */
@@ -51,11 +84,22 @@ const Prediksi = (() => {
 
   /* ─── 4. Forecast: Moving Average ─── */
   function forecastMA(data, period, horizon) {
-    if (data.length < period) return Array(horizon).fill(null);
-    const lastWindow = data.slice(-period);
-    const lastMA     = lastWindow.reduce((a, b) => a + b, 0) / period;
-    // Simple flat forecast after last MA
+    const p = Math.min(period, data.length);
+    if (p === 0) return Array(horizon).fill(0);
+    const lastWindow = data.slice(-p);
+    const lastMA     = lastWindow.reduce((a, b) => a + b, 0) / p;
     return Array(horizon).fill(Math.max(0, Math.round(lastMA)));
+  }
+
+  function forecastWMA(data, period, horizon) {
+    const p = Math.min(period, data.length);
+    if (p === 0) return Array(horizon).fill(0);
+    const lastWindow = data.slice(-p);
+    const weightSum = (p * (p + 1)) / 2;
+    let wma = 0;
+    lastWindow.forEach((val, idx) => { wma += val * (idx + 1); });
+    const lastWMA = wma / weightSum;
+    return Array(horizon).fill(Math.max(0, Math.round(lastWMA)));
   }
 
   /* ─── 5. Forecast: Linear Regression ─── */
@@ -72,8 +116,23 @@ const Prediksi = (() => {
   function forecastES(data, horizon, alpha = 0.3) {
     const smoothed = exponentialSmoothing(data, alpha);
     const lastVal  = smoothed[smoothed.length - 1] || 0;
-    // Simple flat from last smoothed value
     return Array(horizon).fill(Math.max(0, Math.round(lastVal)));
+  }
+
+  function forecastDES(data, horizon, alpha = 0.3, beta = 0.2) {
+    if (data.length < 2) {
+       if (data.length === 1) return Array(horizon).fill(data[0]);
+       return Array(horizon).fill(0);
+    }
+    const res = doubleExponentialSmoothing(data, alpha, beta);
+    const L_last = res.level[res.level.length - 1];
+    const T_last = res.trend[res.trend.length - 1];
+    
+    const forecast = [];
+    for(let h = 1; h <= horizon; h++) {
+       forecast.push(Math.max(0, Math.round(L_last + h * T_last)));
+    }
+    return forecast;
   }
 
   /* ─── 7. Akurasi Metrics ─── */
@@ -109,13 +168,34 @@ const Prediksi = (() => {
   }
 
   function fittedMA(data, period) {
-    if (data.length < period) return data.slice();
-    const fitted = Array(period - 1).fill(null);
-    for (let i = period - 1; i < data.length; i++) {
-      const w = data.slice(i - period + 1, i + 1);
-      fitted.push(Math.round(w.reduce((a, b) => a + b, 0) / period));
+    const p = Math.min(period, data.length);
+    if (p === 0) return data.slice();
+    const fitted = Array(p - 1).fill(null);
+    for (let i = p - 1; i < data.length; i++) {
+        const w = data.slice(i - p + 1, i + 1);
+        fitted.push(Math.round(w.reduce((a, b) => a + b, 0) / p));
     }
     return fitted;
+  }
+
+  function fittedWMA(data, period) {
+    const p = Math.min(period, data.length);
+    if (p === 0) return data.slice();
+    const fitted = Array(p - 1).fill(null);
+    const weightSum = (p * (p + 1)) / 2;
+    for (let i = p - 1; i < data.length; i++) {
+      const w = data.slice(i - p + 1, i + 1);
+      let wma = 0;
+      w.forEach((val, idx) => { wma += val * (idx + 1); });
+      fitted.push(Math.round(wma / weightSum));
+    }
+    return fitted;
+  }
+
+  function fittedDES(data, alpha = 0.3, beta = 0.2) {
+    if (data.length < 2) return data.slice();
+    // For arrays, the fitted values match closely with data length
+    return doubleExponentialSmoothing(data, alpha, beta).fitted;
   }
 
   /* ─── 9. Generate forecast dengan semua metrics ─── */
@@ -135,6 +215,16 @@ const Prediksi = (() => {
         fittedValues   = fittedMA(data, 6).filter(v => v !== null);
         modelInfo      = { name: 'Moving Average (6 Periode)', period: 6 };
         break;
+      case 'wma3':
+        forecastValues = forecastWMA(data, 3, horizon);
+        fittedValues   = fittedWMA(data, 3).filter(v => v !== null);
+        modelInfo      = { name: 'Weighted Moving Average (3)', period: 3 };
+        break;
+      case 'wma6':
+        forecastValues = forecastWMA(data, 6, horizon);
+        fittedValues   = fittedWMA(data, 6).filter(v => v !== null);
+        modelInfo      = { name: 'Weighted Moving Average (6)', period: 6 };
+        break;
       case 'lr':
         forecastValues = forecastLR(data, horizon);
         fittedValues   = fittedLR(data);
@@ -143,10 +233,16 @@ const Prediksi = (() => {
       case 'es':
         forecastValues = forecastES(data, horizon, 0.3);
         fittedValues   = exponentialSmoothing(data, 0.3).map(v => Math.round(v));
-        modelInfo      = { name: 'Exponential Smoothing (alpha=0.3)', alpha: 0.3 };
+        modelInfo      = { name: 'Exponential Smoothing (α=0.3)', alpha: 0.3 };
+        break;
+      case 'des':
+        forecastValues = forecastDES(data, horizon, 0.3, 0.2);
+        fittedValues   = fittedDES(data, 0.3, 0.2);
+        modelInfo      = { name: "Double Exponential Smoothing (Holt's)", alpha: 0.3, beta: 0.2 };
         break;
       default:
         forecastValues = forecastMA(data, 3, horizon);
+        fittedValues   = fittedMA(data, 3).filter(v => v !== null);
     }
 
     // Compute accuracy only if we have enough data

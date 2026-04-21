@@ -224,10 +224,19 @@
           <div class="form-group" style="margin-bottom:0; flex:1.2; min-width:160px;">
             <label class="form-label" for="pred-metode">Metode Forecasting</label>
             <select id="pred-metode" class="form-control">
-              <option value="ma3">Moving Average (3)</option>
-              <option value="ma6">Moving Average (6)</option>
-              <option value="lr" selected>Regresi Linear</option>
-              <option value="es">Eksp. Smoothing</option>
+              <optgroup label="Trend & Musiman">
+                <option value="des">Double Exp. Smoothing (Holt's)</option>
+                <option value="lr" selected>Regresi Linear</option>
+              </optgroup>
+              <optgroup label="Moving Averages">
+                <option value="wma3">Weighted Moving Average (3)</option>
+                <option value="wma6">Weighted Moving Average (6)</option>
+                <option value="ma3">Moving Average (3)</option>
+                <option value="ma6">Moving Average (6)</option>
+              </optgroup>
+              <optgroup label="Smoothing Sederhana">
+                <option value="es">Eksp. Smoothing (Single)</option>
+              </optgroup>
             </select>
           </div>
           <div class="form-group" style="margin-bottom:0; flex:1; min-width:140px;">

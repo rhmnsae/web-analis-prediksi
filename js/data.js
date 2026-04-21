@@ -156,6 +156,20 @@ const DataManager = (() => {
     { id:'BB-008', tanggal:'2024-04-05', material:'Kain Cotton',   masuk:6000, keluar:4500, stok:16400, satuan:'meter', supplier:'PT Textile Jaya' },
     { id:'BB-009', tanggal:'2024-05-05', material:'Kain Cotton',   masuk:7000, keluar:5300, stok:18100, satuan:'meter', supplier:'PT Textile Jaya' },
     { id:'BB-010', tanggal:'2024-06-05', material:'Kain Fleece',   masuk:4000, keluar:2800, stok:8400,  satuan:'meter', supplier:'CV Fleece Indah' },
+
+    // DATA 2026 (Jan–Apr)
+    { id:'BB-011', tanggal:'2026-01-05', material:'Kain Cotton',   masuk:6500, keluar:4800, stok:19800, satuan:'meter', supplier:'PT Textile Jaya' },
+    { id:'BB-012', tanggal:'2026-01-08', material:'Benang Jahit',  masuk:300,  keluar:210,  stok:570,   satuan:'rol',   supplier:'CV Benang Mas' },
+    { id:'BB-013', tanggal:'2026-01-10', material:'Kancing',       masuk:6000, keluar:4500, stok:11300, satuan:'lusin', supplier:'UD Aksesoris Jaya' },
+    { id:'BB-014', tanggal:'2026-01-15', material:'Zipper',        masuk:1200, keluar:950,  stok:2600,  satuan:'pcs',   supplier:'PT Zipper Nusantara' },
+    { id:'BB-015', tanggal:'2026-02-05', material:'Kain Cotton',   masuk:5200, keluar:4100, stok:20900, satuan:'meter', supplier:'PT Textile Jaya' },
+    { id:'BB-016', tanggal:'2026-02-12', material:'Kain Polyester', masuk:3500, keluar:2900, stok:7800, satuan:'meter', supplier:'PT Poly Textindo' },
+    { id:'BB-017', tanggal:'2026-03-05', material:'Kain Cotton',   masuk:7200, keluar:5500, stok:22600, satuan:'meter', supplier:'PT Textile Jaya' },
+    { id:'BB-018', tanggal:'2026-03-10', material:'Benang Jahit',  masuk:250,  keluar:200,  stok:620,   satuan:'rol',   supplier:'CV Benang Mas' },
+    { id:'BB-019', tanggal:'2026-03-20', material:'Kancing',       masuk:5500, keluar:4800, stok:12000, satuan:'lusin', supplier:'UD Aksesoris Jaya' },
+    { id:'BB-020', tanggal:'2026-04-05', material:'Kain Cotton',   masuk:8000, keluar:6200, stok:24400, satuan:'meter', supplier:'PT Textile Jaya' },
+    { id:'BB-021', tanggal:'2026-04-10', material:'Kain Fleece',   masuk:4500, keluar:3100, stok:9800,  satuan:'meter', supplier:'CV Fleece Indah' },
+    { id:'BB-022', tanggal:'2026-04-15', material:'Zipper',        masuk:1500, keluar:1100, stok:3000,  satuan:'pcs',   supplier:'PT Zipper Nusantara' },
   ];
 
   /* ─── Load/Save ke localStorage ─── */
@@ -173,13 +187,19 @@ const DataManager = (() => {
   /* ─── Inisialisasi seed data ─── */
   function init() {
     const SEED_VERSION = 'v4-products-dynamic';
-    if (localStorage.getItem(KEYS.seeded) === SEED_VERSION) return;
-
-    saveData(KEYS.products,  SEED_PRODUCTS);
-    saveData(KEYS.produksi,  SEED_PRODUKSI);
-    saveData(KEYS.penjualan, SEED_PENJUALAN);
-    saveData(KEYS.bahanbaku, SEED_BAHANBAKU);
-    localStorage.setItem(KEYS.seeded, SEED_VERSION);
+    if (localStorage.getItem(KEYS.seeded) !== SEED_VERSION) {
+      saveData(KEYS.products,  SEED_PRODUCTS);
+      saveData(KEYS.produksi,  SEED_PRODUKSI);
+      saveData(KEYS.penjualan, SEED_PENJUALAN);
+      saveData(KEYS.bahanbaku, SEED_BAHANBAKU);
+      localStorage.setItem(KEYS.seeded, SEED_VERSION);
+    } else {
+      // Patch injection for new 2026 Bahan Baku data without resetting the entire DB
+      const currentBB = loadData(KEYS.bahanbaku);
+      if (currentBB.length < SEED_BAHANBAKU.length) {
+         saveData(KEYS.bahanbaku, SEED_BAHANBAKU);
+      }
+    }
   }
 
   /* =====================================================
