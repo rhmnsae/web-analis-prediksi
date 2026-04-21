@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistik Bahan Baku — Data Analis</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Statistik page-specific responsive */
+    .stat-filter-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .stat-date-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .stat-date-group input[type="date"] {
+      width: 140px;
+      padding: 6px 10px;
+    }
+
+    @media (max-width: 768px) {
+      .stat-filter-row {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
+
+      .stat-filter-row select.form-control {
+        width: 100%;
+      }
+
+      .stat-date-group {
+        width: 100%;
+      }
+
+      .stat-date-group input[type="date"] {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+      }
+
+      .stat-filter-row .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      #stat-cards {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #stat-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+    @media (max-width: 360px) {
+      #stat-cards {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="app-body">
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">DA</div>
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-name">Data Analis</div>
+        <div class="sidebar-brand-sub">Data Analis Platform</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Menu Utama</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <rect x="2" y="3" width="9" height="9" rx="1" />
+            <rect x="13" y="3" width="9" height="9" rx="1" />
+            <rect x="2" y="14" width="9" height="9" rx="1" />
+            <rect x="13" y="14" width="9" height="9" rx="1" />
+          </svg></span><span class="nav-label">Dashboard</span></a>
+      <a href="input-data.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          </svg></span><span class="nav-label">Input Data</span></a>
+      <div class="sidebar-section-label">Analisis</div>
+      <a href="statistik.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg></span><span class="nav-label">Statistik Produk</span></a>
+      <a href="statistik-bb.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+            </path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg></span><span class="nav-label">Bahan Baku</span></a>
+      <a href="prediksi.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+            <polyline points="17 6 23 6 23 12" />
+          </svg></span><span class="nav-label">Prediksi</span></a>
+      <div class="sidebar-section-label">Laporan</div>
+      <a href="laporan.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg></span><span class="nav-label">Laporan</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item w-full" id="logout-btn"
+        style="background:none;border:none;cursor:pointer;text-align:left;"><span class="nav-icon"><svg
+            viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg></span><span class="nav-label">Keluar</span></button>
+
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-wrapper" id="main-wrapper">
+    <header class="navbar">
+      <button class="navbar-toggle" id="sidebar-toggle"><svg viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg></button>
+      <div class="navbar-title">
+        <div class="navbar-page-title">Statistik Bahan Baku</div>
+        <div class="navbar-breadcrumb">Analisis arus keluar-masuk, persediaan, dan utilitas material</div>
+      </div>
+      <div class="navbar-actions">
+        <div class="navbar-user">
+          <div class="user-avatar" id="navbar-initials" style="width:30px;height:30px;font-size:0.72rem;">--</div><span
+            class="navbar-user-name" id="navbar-user-name">Loading...</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content fade-in">
+      <div class="page-header"
+        style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div class="page-title">Statistik Bahan Baku</div>
+          <div class="page-subtitle">Analisis keluar-masuk dan akumulasi sisa material</div>
+        </div>
+        <div class="stat-filter-row">
+          <select class="form-control" id="stat-material" style="width:150px;">
+            <option value="all">Semua Material</option>
+          </select>
+          <div class="stat-date-group">
+            <input type="date" class="form-control" id="stat-start" title="Tanggal Mulai">
+            <span class="stat-date-sep" style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">s/d</span>
+            <input type="date" class="form-control" id="stat-end" title="Tanggal Akhir">
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-hitung">
+            <svg viewBox="0 0 24 24">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+            Hitung Statistik
+          </button>
+        </div>
+      </div>
+
+      <!-- Statistik Deskriptif Cards -->
+      <div class="stat-grid mb-6" id="stat-cards" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="stat-box" data-explain="bb-jumlah-data">
+          <div class="stat-box-label">Total Transaksi</div>
+          <div class="stat-box-value" id="bb-count">-</div>
+        </div>
+        <div class="stat-box" data-explain="bb-varian">
+          <div class="stat-box-label">Varian Material Berbeda</div>
+          <div class="stat-box-value" id="bb-varian">-</div>
+          <div class="stat-box-unit">jenis</div>
+        </div>
+        <div class="stat-box" data-explain="bb-masuk">
+          <div class="stat-box-label">Total Volume Masuk</div>
+          <div class="stat-box-value" id="bb-masuk" style="color:var(--green-500);">-</div>
+          <div class="stat-box-unit" id="bb-unit-m">unit</div>
+        </div>
+        <div class="stat-box" data-explain="bb-keluar">
+          <div class="stat-box-label">Total Volume Keluar</div>
+          <div class="stat-box-value" id="bb-keluar" style="color:var(--amber-500);">-</div>
+          <div class="stat-box-unit" id="bb-unit-k">unit</div>
+        </div>
+        <div class="stat-box" data-explain="bb-stok">
+          <div class="stat-box-label">Estimasi Stok Akhir</div>
+          <div class="stat-box-value" id="bb-stok" style="color:var(--text-primary);">-</div>
+          <div class="stat-box-unit" id="bb-unit-s">unit</div>
+        </div>
+        <div class="stat-box" data-explain="bb-low">
+          <div class="stat-box-label">Material Warning (Stok < 100)</div>
+              <div class="stat-box-value" id="bb-low" style="color:var(--red-400);">-</div>
+              <div class="stat-box-unit">jenis</div>
+          </div>
+        </div>
+
+        <!-- Chart Row -->
+        <div class="grid-2 mb-5">
+          <!-- Doughnut / Pie Chart --->
+          <div class="card" data-explain="distribusi-material">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Komposisi Stok Material</div>
+                <div class="card-subtitle">Volume stok berdasarkan jenis dalam rasio lingkaran</div>
+              </div>
+            </div>
+            <div class="chart-container" style="height:280px; display:flex; justify-content:center;">
+              <canvas id="chart-pie-stok"></canvas>
+            </div>
+          </div>
+
+          <!-- Tren per bulan -->
+          <div class="card" data-explain="tren-bb-stat">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Trend Masuk vs Keluar per Bulan</div>
+                <div class="card-subtitle">Perbandingan arus raw material bulanan</div>
+              </div>
+            </div>
+            <div class="chart-container" style="height:280px;">
+              <canvas id="chart-bb-tren"></canvas>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- Tabel Deskriptif Lengkap -->
+        <div class="card" data-explain="stat-bb-lengkap">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Analisis Agregat per Material</div>
+              <div class="card-subtitle">Kalkulasi total masuk, keluar, dan sisa per jenis bahan baku</div>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Material</th>
+                  <th>Satuan</th>
+                  <th>Trans. Masuk</th>
+                  <th>Trans. Keluar</th>
+                  <th>Tot. Masuk</th>
+                  <th>Tot. Keluar</th>
+                  <th>Estimasi Sisa (Stok)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="bb-full-table"></tbody>
+            </table>
+          </div>
+        </div>
+
+    </main>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/statistik.js"></script>
+  <script src="js/explain.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const session = initPage();
+      if (session) {
+        const currentYear = new Date().getFullYear();
+        const _td = new Date();
+        const today = `${_td.getFullYear()}-${String(_td.getMonth() + 1).padStart(2, '0')}-${String(_td.getDate()).padStart(2, '0')}`;
+        document.getElementById('stat-start').value = `${currentYear}-01-01`;
+        document.getElementById('stat-end').value = today;
+
+        // Isi dropdown material secara dinamis
+        const bbData = DataManager.getBahanBaku();
+        const uniqueMaterials = [...new Set(bbData.map(r => r.material))];
+        const statSel = document.getElementById('stat-material');
+        statSel.innerHTML = '<option value="all">Semua Material</option>';
+        uniqueMaterials.forEach(m => {
+          const opt = document.createElement('option');
+          opt.value = m; opt.textContent = m;
+          statSel.appendChild(opt);
+        });
+
+        waitForChart(function () {
+          initChartDefaults();
+          hitungStatistikBB();
+        });
+        document.getElementById('btn-hitung').addEventListener('click', hitungStatistikBB);
+      }
+    });
+
+    function waitForChart(cb, tries) {
+      tries = tries || 0;
+      if (typeof Chart !== 'undefined') { cb(); return; }
+      if (tries > 30) { console.warn('Chart.js tidak ter-load.'); return; }
+      setTimeout(function () { waitForChart(cb, tries + 1); }, 100);
+    }
+
+    let trenBBChart = null, pieStokChart = null;
+    const bbColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
+
+    function isDateInRange(dateStr, startStr, endStr) {
+      if (!startStr && !endStr) return true;
+      const target = new Date(dateStr).getTime();
+      if (startStr && target < new Date(startStr).getTime()) return false;
+      if (endStr && target > new Date(endStr).getTime()) return false;
+      return true;
+    }
+
+    function getMaterialColor(material, index) {
+      return bbColors[index % bbColors.length];
+    }
+
+    function hitungStatistikBB() {
+      const material = document.getElementById('stat-material').value;
+      const startVal = document.getElementById('stat-start').value;
+      const endVal = document.getElementById('stat-end').value;
+      const bahanBaku = DataManager.getBahanBaku();
+
+      let filtered = bahanBaku;
+      let tahun = new Date().getFullYear();
+
+      if (startVal || endVal) {
+        filtered = filtered.filter(r => isDateInRange(r.tanggal, startVal, endVal));
+        if (startVal) tahun = new Date(startVal).getFullYear();
+        else if (endVal) tahun = new Date(endVal).getFullYear();
+      } else {
+        filtered = filtered.filter(r => new Date(r.tanggal).getFullYear() === tahun);
+      }
+
+      if (material !== 'all') filtered = filtered.filter(r => r.material === material);
+
+      if (!filtered.length) {
+        Toast.show('Tidak ada data bahan baku untuk parameter yang dipilih.', 'warning');
+        return;
+      }
+
+      const allMaterials = [...new Set(filtered.map(r => r.material))];
+
+      let totalMasuk = 0, totalKeluar = 0, totalStok = 0, warningCount = 0;
+      const materialStats = {};
+
+      allMaterials.forEach(m => {
+        materialStats[m] = { masuk: 0, keluar: 0, stok: 0, transMasuk: 0, transKeluar: 0, satuan: 'unit' };
+      });
+
+      filtered.forEach(r => {
+        totalMasuk += r.masuk || 0;
+        totalKeluar += r.keluar || 0;
+
+        const mst = materialStats[r.material];
+        mst.satuan = r.satuan || 'unit';
+        mst.masuk += r.masuk || 0;
+        mst.keluar += r.keluar || 0;
+        if (r.masuk > 0) mst.transMasuk++;
+        if (r.keluar > 0) mst.transKeluar++;
+
+        // stok terkini di rekap langsung dari sisa (meskipun formula sederhana)
+        mst.stok += (r.masuk || 0) - (r.keluar || 0);
+      });
+
+      allMaterials.forEach(m => {
+        totalStok += materialStats[m].stok;
+        if (materialStats[m].stok < 100) warningCount++;
+      });
+
+      // Render Cards
+      document.getElementById('bb-count').textContent = DataManager.formatNumber(filtered.length);
+      document.getElementById('bb-varian').textContent = allMaterials.length;
+      document.getElementById('bb-masuk').textContent = DataManager.formatNumber(totalMasuk);
+      document.getElementById('bb-keluar').textContent = DataManager.formatNumber(totalKeluar);
+      document.getElementById('bb-stok').textContent = DataManager.formatNumber(totalStok);
+      document.getElementById('bb-low').textContent = warningCount;
+
+      const unitLabel = material !== 'all' ? materialStats[material].satuan : 'campur';
+      document.getElementById('bb-unit-m').textContent = unitLabel;
+      document.getElementById('bb-unit-k').textContent = unitLabel;
+      document.getElementById('bb-unit-s').textContent = unitLabel;
+
+      renderPieStok(materialStats, allMaterials);
+      renderTrenBB(filtered, tahun, material);
+      renderStatFullTable(materialStats, allMaterials);
+    }
+
+    function renderPieStok(stats, materials) {
+      pieStokChart = destroyChart(pieStokChart);
+      const ctx = document.getElementById('chart-pie-stok');
+      if (!ctx || !materials.length) return;
+
+      const labels = materials;
+      const data = materials.map(m => Math.max(0, stats[m].stok));
+      const bgColors = materials.map((m, i) => getMaterialColor(m, i));
+
+      pieStokChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: bgColors,
+            borderWidth: 2,
+            borderColor: '#ffffff',
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: {
+            legend: { position: 'right', labels: { boxWidth: 12, usePointStyle: true, font: { family: 'Inter', size: 11 } } }
+          }
+        }
+      });
+    }
+
+    function renderTrenBB(data, tahun, singleMaterial) {
+      trenBBChart = destroyChart(trenBBChart);
+
+      const monthlyMasuk = Array(12).fill(0);
+      const monthlyKeluar = Array(12).fill(0);
+
+      data.forEach(r => {
+        const d = new Date(r.tanggal);
+        if (d.getFullYear() === tahun) {
+          const m = d.getMonth();
+          monthlyMasuk[m] += r.masuk || 0;
+          monthlyKeluar[m] += r.keluar || 0;
+        }
+      });
+
+      const ctx = document.getElementById('chart-bb-tren');
+      if (!ctx) return;
+
+      trenBBChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: DataManager.MONTHS,
+          datasets: [
+            {
+              label: 'Masuk',
+              data: monthlyMasuk,
+              backgroundColor: '#10b981',
+              borderRadius: 4,
+              categoryPercentage: 0.8,
+              barPercentage: 0.9
+            },
+            {
+              label: 'Keluar',
+              data: monthlyKeluar,
+              backgroundColor: '#f59e0b',
+              borderRadius: 4,
+              categoryPercentage: 0.8,
+              barPercentage: 0.9
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          scales: {
+            x: { grid: { display: false } },
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }
+          }
+        }
+      });
+    }
+
+    function renderStatFullTable(stats, materials) {
+      const tbody = document.getElementById('bb-full-table');
+      tbody.innerHTML = materials.map((m, i) => {
+        const s = stats[m];
+        const status = s.stok < 100
+          ? `<span class="badge badge-red">Stok Rendah</span>`
+          : `<span class="badge badge-green">Aman</span>`;
+
+        return `<tr>
+        <td style="font-weight:600;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${getMaterialColor(m, i)};margin-right:8px;vertical-align:middle;"></span>${m}</td>
+        <td><span class="badge badge-gray">${s.satuan}</span></td>
+        <td class="mono">${s.transMasuk}x</td>
+        <td class="mono">${s.transKeluar}x</td>
+        <td class="mono" style="color:var(--green-600);">${DataManager.formatNumber(s.masuk)}</td>
+        <td class="mono" style="color:var(--amber-600);">${DataManager.formatNumber(s.keluar)}</td>
+        <td class="mono" style="font-weight:600; font-size:1.05em;">${DataManager.formatNumber(s.stok)}</td>
+        <td>${status}</td>
+      </tr>`;
+      }).join('');
+    }
+  </script>
+</body>
+
+</html>

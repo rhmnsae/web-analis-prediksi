@@ -181,11 +181,14 @@
             <line x1="12" y1="20" x2="12" y2="4" />
             <line x1="6" y1="20" x2="6" y2="14" />
           </svg></span><span class="nav-label">Statistik Produk</span></a>
-      <a href="statistik-bb.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+      <a href="statistik-bb.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+            </path>
             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
             <line x1="12" y1="22.08" x2="12" y2="12"></line>
-          </svg></span><span class="nav-label">Stat. Bahan Baku</span></a>
+          </svg></span><span class="nav-label">Bahan Baku</span></a>
       <a href="prediksi.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
             <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
             <polyline points="17 6 23 6 23 12" />
@@ -501,7 +504,8 @@
           </div>
           <div class="form-group">
             <label class="form-label" for="fp-harga">Harga Satuan</label>
-            <input type="text" id="fp-harga-display" class="form-control" readonly style="background:var(--bg-secondary); color:var(--text-muted); cursor:not-allowed;" value="Pilih item">
+            <input type="text" id="fp-harga-display" class="form-control" readonly
+              style="background:var(--bg-secondary); color:var(--text-muted); cursor:not-allowed;" value="Pilih item">
             <input type="hidden" id="fp-harga">
           </div>
         </div>
@@ -653,7 +657,7 @@
       document.getElementById('penjualan-filter-produk').addEventListener('change', renderPenjualanTable);
 
       // Auto-load satuan and harga on product selection
-      document.getElementById('f-produk').addEventListener('change', function(e) {
+      document.getElementById('f-produk').addEventListener('change', function (e) {
         const val = e.target.value;
         const helper = document.getElementById('f-produk-helper');
         if (!val) { helper.textContent = ''; return; }
@@ -661,16 +665,16 @@
         helper.textContent = `Satuan produksi: ${unit}`;
       });
 
-      document.getElementById('fp-produk').addEventListener('change', function(e) {
+      document.getElementById('fp-produk').addEventListener('change', function (e) {
         const val = e.target.value;
         const hargaInput = document.getElementById('fp-harga');
         const hargaDisplay = document.getElementById('fp-harga-display');
         const labelSatuan = document.getElementById('fp-satuan-label');
-        if (!val) { 
-          hargaInput.value = ''; 
-          hargaDisplay.value = 'Pilih item'; 
+        if (!val) {
+          hargaInput.value = '';
+          hargaDisplay.value = 'Pilih item';
           labelSatuan.textContent = 'pcs';
-          return; 
+          return;
         }
         const harga = DataManager.getHargaSatuan(val);
         const unit = DataManager.getProductUnit(val);

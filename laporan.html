@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Laporan — Data Analis</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
   <style>
@@ -20,60 +23,257 @@
       overflow-wrap: break-word;
       word-wrap: break-word;
     }
-    .report-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #e2e8f0; }
-    .report-logo-box { display:flex; align-items:center; gap:12px; }
-    .report-logo-icon { width:40px; height:40px; background:linear-gradient(135deg,#2563eb,#7c3aed); border-radius:10px; display:flex; align-items:center; justify-content:center; }
-    .report-logo-icon svg { width:22px; height:22px; stroke:#fff; fill:none; stroke-width:2; }
-    .report-co-name { font-family:'Outfit',sans-serif; font-size:1rem; font-weight:800; color:#1e293b; }
-    .report-co-sub  { font-size:0.75rem; color:#64748b; }
-    .report-meta    { text-align:right; font-size:0.75rem; color:#64748b; line-height:1.8; }
-    .report-title   { font-family:'Outfit',sans-serif; font-size:1.5rem; font-weight:800; color:#1e293b; margin-bottom:4px; }
-    .report-period  { color:#64748b; font-size:0.85rem; margin-bottom:24px; }
-    .report-section { margin-bottom:28px; }
-    .report-section-title { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#64748b; margin-bottom:12px; padding-bottom:6px; border-bottom:1px solid #e2e8f0; }
-    .report-kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
-    .report-kpi { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px; text-align:center; }
-    .report-kpi-label { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:#94a3b8; margin-bottom:6px; }
-    .report-kpi-value { font-size:1.2rem; font-weight:800; color:#1e293b; }
-    .report-table-wrapper { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom: 8px; }
-    .report-table { width:100%; border-collapse:collapse; font-size:0.82rem; min-width: 500px; }
-    .report-table th { background:#f1f5f9; color:#475569; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; padding:10px 14px; text-align:left; border-bottom:1px solid #e2e8f0; white-space: nowrap; }
-    .report-table td { padding:9px 14px; border-bottom:1px solid #e2e8f0; color:#334155; vertical-align:middle; white-space: nowrap; }
-    .report-footer  { margin-top:32px; padding-top:16px; border-top:1px solid #e2e8f0; display:flex; justify-content:space-between; font-size:0.72rem; color:#94a3b8; flex-wrap: wrap; gap: 8px; }
-    
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .report-logo-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .report-logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .report-logo-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .report-co-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .report-co-sub {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .report-meta {
+      text-align: right;
+      font-size: 0.75rem;
+      color: #64748b;
+      line-height: 1.8;
+    }
+
+    .report-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .report-period {
+      color: #64748b;
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+    }
+
+    .report-section {
+      margin-bottom: 28px;
+    }
+
+    .report-section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .report-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .report-kpi {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .report-kpi-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+
+    .report-kpi-value {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .report-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 8px;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      min-width: 500px;
+    }
+
+    .report-table th {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .report-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .report-footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: #94a3b8;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     @media print {
-      @page { margin: 1cm; }
-      body { background: white !important; overflow: visible !important; }
-      body * { visibility: hidden; }
-      #printable-report, #printable-report * { visibility: visible; }
-      #printable-report { position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; padding: 0 !important; margin: 0 !important; min-height: auto; }
-      
+      @page {
+        margin: 1cm;
+      }
+
+      body {
+        background: white !important;
+        overflow: visible !important;
+      }
+
+      body * {
+        visibility: hidden;
+      }
+
+      #printable-report,
+      #printable-report * {
+        visibility: visible;
+      }
+
+      #printable-report {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: auto;
+      }
+
       /* Reset layout wrappers specifically for printing to avoid cut-off */
-      #preview-wrap, #report-preview-area, .report-table-wrapper { 
-        height: auto !important; 
-        max-height: none !important; 
-        overflow: visible !important; 
-        width: 100% !important; 
+      #preview-wrap,
+      #report-preview-area,
+      .report-table-wrapper {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        width: 100% !important;
         position: static !important;
       }
-      .report-table { 
-        width: 100% !important; 
-        min-width: 0 !important; 
-        table-layout: auto !important; 
+
+      .report-table {
+        width: 100% !important;
+        min-width: 0 !important;
+        table-layout: auto !important;
       }
-      .report-table th, .report-table td { 
-        white-space: normal !important; 
-        word-wrap: break-word !important; 
-        padding: 6px 8px !important; 
+
+      .report-table th,
+      .report-table td {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        padding: 6px 8px !important;
       }
-      
-      .report-preview { padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
-      .report-kpi-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; }
-      
-      .sidebar, .navbar, .page-header, .report-sidebar, #toast-container, .card-header, #konfig-card, #preview-badge { display: none !important; }
-      .main-wrapper { margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; }
-      .card { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
-      .content { padding: 0 !important; }
+
+      .report-preview {
+        padding: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+
+      .report-kpi-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 8px !important;
+      }
+
+      .sidebar,
+      .navbar,
+      .page-header,
+      .report-sidebar,
+      #toast-container,
+      .card-header,
+      #konfig-card,
+      #preview-badge {
+        display: none !important;
+      }
+
+      .main-wrapper {
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+
+      .card {
+        border: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      .content {
+        padding: 0 !important;
+      }
     }
 
     /* Laporan responsive */
@@ -81,324 +281,435 @@
       .grid-1-2 {
         grid-template-columns: 1fr !important;
       }
+
       #konfig-card {
         position: static !important;
       }
+
       #preview-wrap {
         height: 500px !important;
       }
+
       .report-kpi-grid {
         grid-template-columns: repeat(2, 1fr) !important;
       }
     }
+
     @media (max-width: 768px) {
       .report-preview {
         padding: 24px !important;
       }
+
       .report-header {
         flex-direction: column !important;
         gap: 12px;
       }
+
       .report-meta {
         text-align: left !important;
       }
+
       div[style*="grid-template-columns:1fr 1fr"][style*="gap:10px"] {
         grid-template-columns: 1fr !important;
       }
     }
+
     @media (max-width: 480px) {
       .report-preview {
         padding: 16px !important;
       }
+
       .report-title {
         font-size: 1.15rem !important;
       }
+
       .report-co-name {
         font-size: 0.9rem !important;
       }
+
       .report-kpi-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 8px !important;
       }
+
       .report-kpi-value {
         font-size: 1rem !important;
       }
+
       #preview-wrap {
         height: 420px !important;
       }
+
       .report-meta {
         font-size: 0.7rem !important;
       }
-      .report-table th, .report-table td {
+
+      .report-table th,
+      .report-table td {
         padding: 8px 10px !important;
       }
-      #preview-wrap, #preview-wrap .card, #report-preview-area {
+
+      #preview-wrap,
+      #preview-wrap .card,
+      #report-preview-area {
         min-width: 0 !important;
       }
     }
-
   </style>
 </head>
+
 <body class="app-body">
-<div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-logo">DA</div>
-    <div class="sidebar-brand"><div class="sidebar-brand-name">Data Analis</div><div class="sidebar-brand-sub">Data Analis Platform</div></div>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="sidebar-section-label">Menu Utama</div>
-    <a href="dashboard.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="9" height="9" rx="1"/><rect x="13" y="3" width="9" height="9" rx="1"/><rect x="2" y="14" width="9" height="9" rx="1"/><rect x="13" y="14" width="9" height="9" rx="1"/></svg></span><span class="nav-label">Dashboard</span></a>
-    <a href="input-data.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span><span class="nav-label">Input Data</span></a>
-    <div class="sidebar-section-label">Analisis</div>
-    <a href="statistik.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="nav-label">Statistik</span></a>
-    <a href="prediksi.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span><span class="nav-label">Prediksi</span></a>
-    <div class="sidebar-section-label">Laporan</div>
-    <a href="laporan.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="nav-label">Laporan</span></a>
-
-  </nav>
-  <div class="sidebar-footer">
-    <button class="nav-item w-full" id="logout-btn" style="background:none;border:none;cursor:pointer;text-align:left;"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span><span class="nav-label">Keluar</span></button>
-
-  </div>
-</aside>
-
-<div class="main-wrapper" id="main-wrapper">
-  <header class="navbar">
-    <button class="navbar-toggle" id="sidebar-toggle"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-    <div class="navbar-title">
-      <div class="navbar-page-title">Generator Laporan</div>
-      <div class="navbar-breadcrumb">Buat dan cetak laporan analisis untuk perusahaan</div>
-    </div>
-    <div class="navbar-actions">
-      <div class="navbar-user"><div class="user-avatar" id="navbar-initials" style="width:30px;height:30px;font-size:0.72rem;">--</div><span class="navbar-user-name" id="navbar-user-name">Loading...</span></div>
-    </div>
-  </header>
-
-  <main class="content fade-in">
-    <div class="page-header"><div class="page-title">Generator Laporan</div><div class="page-subtitle">Buat laporan otomatis untuk keperluan operasional perusahaan</div></div>
-
-    <div class="grid-1-2" style="align-items:start;">
-
-      <!-- Konfigurasi -->
-      <div class="card" id="konfig-card" style="position:sticky;top:80px;">
-        <div class="card-header"><div class="card-title">Konfigurasi Laporan</div></div>
-
-        <div class="form-group">
-          <label class="form-label">Jenis Laporan</label>
-          <select id="lap-jenis" class="form-control">
-            <option value="harian">Laporan Harian / Spesifik</option>
-            <option value="bulanan">Laporan Bulanan</option>
-            <option value="kuartalan">Laporan Kuartalan</option>
-            <option value="tahunan" selected>Laporan Tahunan</option>
-            <option value="eksekutif">Ringkasan Eksekutif</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group" id="lap-year-group">
-            <label class="form-label">Tahun</label>
-            <select id="lap-tahun" class="form-control">
-              <option value="2024" selected>2024</option>
-              <option value="2023">2023</option>
-            </select>
-          </div>
-          <div class="form-group" id="lap-month-group">
-            <label class="form-label">Bulan</label>
-            <select id="lap-bulan" class="form-control">
-              <option value="1">Januari</option><option value="2">Februari</option>
-              <option value="3">Maret</option><option value="4">April</option>
-              <option value="5">Mei</option><option value="6">Juni</option>
-              <option value="7">Juli</option><option value="8">Agustus</option>
-              <option value="9">September</option><option value="10">Oktober</option>
-              <option value="11">November</option><option value="12" selected>Desember</option>
-            </select>
-          </div>
-          <div class="form-group" id="lap-date-group" style="display:none; width:100%;">
-            <label class="form-label">Rentang Tanggal</label>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <input type="date" id="lap-start" class="form-control" title="Tanggal Mulai">
-              <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">s/d</span>
-              <input type="date" id="lap-end" class="form-control" title="Tanggal Akhir">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Dibuat Oleh</label>
-          <input type="text" id="lap-pembuat" class="form-control" placeholder="Nama pembuat laporan">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Ditujukan Kepada</label>
-          <input type="text" id="lap-kepada" class="form-control" placeholder="Manajer / Direktur" value="Direktur Operasional">
-        </div>
-
-        <div class="divider"></div>
-
-        <button class="btn btn-primary w-full" id="btn-generate" style="margin-bottom:16px;justify-content:center;padding:12px;">
-          <svg viewBox="0 0 24 24" style="margin-right:8px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <span style="font-weight:700;">Generate Laporan</span>
-        </button>
-        
-        <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Opsi Ekspor</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-          <button class="btn btn-secondary" id="btn-csv" disabled style="justify-content:center;font-size:0.8rem;padding:10px;">
-            <svg viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-            Excel (CSV)
-          </button>
-          <button class="btn btn-secondary" id="btn-pdf" disabled style="justify-content:center;font-size:0.8rem;padding:10px;">
-            <svg viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><rect x="8" y="13" width="8" height="4"/></svg>
-            File PDF
-          </button>
-        </div>
-        
-        <button class="btn btn-secondary w-full" id="btn-print" disabled style="justify-content:center;font-size:0.8rem;padding:10px;">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Cetak Langsung
-        </button>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">DA</div>
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-name">Data Analis</div>
+        <div class="sidebar-brand-sub">Data Analis Platform</div>
       </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Menu Utama</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <rect x="2" y="3" width="9" height="9" rx="1" />
+            <rect x="13" y="3" width="9" height="9" rx="1" />
+            <rect x="2" y="14" width="9" height="9" rx="1" />
+            <rect x="13" y="14" width="9" height="9" rx="1" />
+          </svg></span><span class="nav-label">Dashboard</span></a>
+      <a href="input-data.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          </svg></span><span class="nav-label">Input Data</span></a>
+      <div class="sidebar-section-label">Analisis</div>
+      <a href="statistik.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg></span><span class="nav-label">Statistik Produk</span></a>
+      <a href="statistik-bb.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+            </path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg></span><span class="nav-label">Bahan Baku</span></a>
+      <a href="prediksi.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+            <polyline points="17 6 23 6 23 12" />
+          </svg></span><span class="nav-label">Prediksi</span></a>
+      <div class="sidebar-section-label">Laporan</div>
+      <a href="laporan.html" class="nav-item"><span class="nav-icon"><svg viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg></span><span class="nav-label">Laporan</span></a>
 
-      <!-- Preview -->
-      <div id="preview-wrap" style="display:flex;flex-direction:column;height:550px;min-width:0;">
-        <div class="card" style="padding:0;overflow:hidden;flex:1;display:flex;flex-direction:column;margin-bottom:0;min-width:0;">
-          <div style="padding:16px 20px; border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; background:var(--bg-secondary);">
-            <div style="font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--blue-400)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              Live Preview Laporan
-            </div>
-            <span class="badge badge-blue" id="preview-badge">Belum digenerate</span>
-          </div>
-          <div id="report-preview-area" style="padding:24px;overflow-y:auto;overflow-x:hidden;flex:1;background:var(--bg-card);scrollbar-width:thin;scrollbar-color:var(--border-strong) var(--bg-card);min-width:0;">
-            <div class="empty-state" style="margin-top:60px;">
-              <div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-              <div class="empty-title">Laporan belum digenerate</div>
-              <div class="empty-desc">Atur konfigurasi dan tekan "Generate Laporan"</div>
-            </div>
-          </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item w-full" id="logout-btn"
+        style="background:none;border:none;cursor:pointer;text-align:left;"><span class="nav-icon"><svg
+            viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg></span><span class="nav-label">Keluar</span></button>
+
+    </div>
+  </aside>
+
+  <div class="main-wrapper" id="main-wrapper">
+    <header class="navbar">
+      <button class="navbar-toggle" id="sidebar-toggle"><svg viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg></button>
+      <div class="navbar-title">
+        <div class="navbar-page-title">Generator Laporan</div>
+        <div class="navbar-breadcrumb">Buat dan cetak laporan analisis untuk perusahaan</div>
+      </div>
+      <div class="navbar-actions">
+        <div class="navbar-user">
+          <div class="user-avatar" id="navbar-initials" style="width:30px;height:30px;font-size:0.72rem;">--</div><span
+            class="navbar-user-name" id="navbar-user-name">Loading...</span>
         </div>
       </div>
+    </header>
 
-    </div>
-  </main>
-</div>
+    <main class="content fade-in">
+      <div class="page-header">
+        <div class="page-title">Generator Laporan</div>
+        <div class="page-subtitle">Buat laporan otomatis untuk keperluan operasional perusahaan</div>
+      </div>
 
-<div class="toast-container" id="toast-container"></div>
+      <div class="grid-1-2" style="align-items:start;">
 
-<script src="js/auth.js"></script>
-<script src="js/data.js"></script>
-<script src="js/app.js"></script>
-<script src="js/statistik.js"></script>
-<script>
-  const session = initPage();
-  let currentReportData = null;
+        <!-- Konfigurasi -->
+        <div class="card" id="konfig-card" style="position:sticky;top:80px;">
+          <div class="card-header">
+            <div class="card-title">Konfigurasi Laporan</div>
+          </div>
 
-  if (session) {
-    // Set pembuat ke nama user login
-    document.getElementById('lap-pembuat').value = session.fullName;
+          <div class="form-group">
+            <label class="form-label">Jenis Laporan</label>
+            <select id="lap-jenis" class="form-control">
+              <option value="harian">Laporan Harian / Spesifik</option>
+              <option value="bulanan">Laporan Bulanan</option>
+              <option value="kuartalan">Laporan Kuartalan</option>
+              <option value="tahunan" selected>Laporan Tahunan</option>
+              <option value="eksekutif">Ringkasan Eksekutif</option>
+            </select>
+          </div>
 
-    const currentYear = new Date().getFullYear();
-    document.getElementById('lap-start').value = `${currentYear}-01-01`;
-    document.getElementById('lap-end').value = `${currentYear}-12-31`;
+          <div class="form-row">
+            <div class="form-group" id="lap-year-group">
+              <label class="form-label">Tahun</label>
+              <select id="lap-tahun" class="form-control">
+                <option value="2024" selected>2024</option>
+                <option value="2023">2023</option>
+              </select>
+            </div>
+            <div class="form-group" id="lap-month-group">
+              <label class="form-label">Bulan</label>
+              <select id="lap-bulan" class="form-control">
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12" selected>Desember</option>
+              </select>
+            </div>
+            <div class="form-group" id="lap-date-group" style="display:none; width:100%;">
+              <label class="form-label">Rentang Tanggal</label>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <input type="date" id="lap-start" class="form-control" title="Tanggal Mulai">
+                <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">s/d</span>
+                <input type="date" id="lap-end" class="form-control" title="Tanggal Akhir">
+              </div>
+            </div>
+          </div>
 
-    // Toggle bulan visibility berdasarkan jenis laporan
-    document.getElementById('lap-jenis').addEventListener('change', function() {
-      const monthGroup = document.getElementById('lap-month-group');
-      const yearGroup = document.getElementById('lap-year-group');
-      const dateGroup = document.getElementById('lap-date-group');
-      const v = this.value;
-      monthGroup.style.display = (v === 'bulanan' || v === 'kuartalan') ? '' : 'none';
-      yearGroup.style.display = (v === 'harian') ? 'none' : '';
-      dateGroup.style.display = (v === 'harian') ? '' : 'none';
-    });
-    document.getElementById('lap-jenis').dispatchEvent(new Event('change'));
+          <div class="form-group">
+            <label class="form-label">Dibuat Oleh</label>
+            <input type="text" id="lap-pembuat" class="form-control" placeholder="Nama pembuat laporan">
+          </div>
 
-    document.getElementById('btn-generate').addEventListener('click', generateLaporan);
-    document.getElementById('btn-print').addEventListener('click', () => { window.print(); });
-    document.getElementById('btn-csv').addEventListener('click', exportCSV);
-    document.getElementById('btn-pdf').addEventListener('click', exportPDF);
+          <div class="form-group">
+            <label class="form-label">Ditujukan Kepada</label>
+            <input type="text" id="lap-kepada" class="form-control" placeholder="Manajer / Direktur"
+              value="Direktur Operasional">
+          </div>
 
-    // Samakan tinggi preview dengan konfigurasi
-    setTimeout(() => {
-      const leftC = document.getElementById('konfig-card');
-      const rightW = document.getElementById('preview-wrap');
-      if (leftC && rightW) rightW.style.height = leftC.offsetHeight + 'px';
-    }, 100);
-  }
+          <div class="divider"></div>
 
-  function generateLaporan() {
-    const jenis   = document.getElementById('lap-jenis').value;
-    const tahun   = parseInt(document.getElementById('lap-tahun').value);
-    const bulan   = parseInt(document.getElementById('lap-bulan').value);
-    const pembuat = document.getElementById('lap-pembuat').value || 'Data Analis';
-    const kepada  = document.getElementById('lap-kepada').value  || 'Perusahaan';
+          <button class="btn btn-primary w-full" id="btn-generate"
+            style="margin-bottom:16px;justify-content:center;padding:12px;">
+            <svg viewBox="0 0 24 24" style="margin-right:8px;">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            <span style="font-weight:700;">Generate Laporan</span>
+          </button>
 
-    const produksi  = DataManager.getProduksi();
-    const penjualan = DataManager.getPenjualan();
-    const now       = new Date();
+          <div
+            style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">
+            Opsi Ekspor</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+            <button class="btn btn-secondary" id="btn-csv" disabled
+              style="justify-content:center;font-size:0.8rem;padding:10px;">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="8" y1="13" x2="16" y2="13" />
+                <line x1="8" y1="17" x2="16" y2="17" />
+              </svg>
+              Excel (CSV)
+            </button>
+            <button class="btn btn-secondary" id="btn-pdf" disabled
+              style="justify-content:center;font-size:0.8rem;padding:10px;">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <rect x="8" y="13" width="8" height="4" />
+              </svg>
+              File PDF
+            </button>
+          </div>
 
-    const monthNames = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-    const quarters   = { 1:'Q1 (Jan-Mar)',2:'Q2 (Apr-Jun)',3:'Q3 (Jul-Sep)',4:'Q4 (Okt-Des)' };
+          <button class="btn btn-secondary w-full" id="btn-print" disabled
+            style="justify-content:center;font-size:0.8rem;padding:10px;">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;">
+              <polyline points="6 9 6 2 18 2 18 9" />
+              <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+              <rect x="6" y="14" width="12" height="8" />
+            </svg>
+            Cetak Langsung
+          </button>
+        </div>
 
-    let periodeLabel;
-    let filterFn;
-    
-    function isDateInRange(dateStr, startStr, endStr) {
-      if (!startStr && !endStr) return true;
-      const target = new Date(dateStr).getTime();
-      if (startStr && target < new Date(startStr).getTime()) return false;
-      if (endStr && target > new Date(endStr).getTime()) return false;
-      return true;
+        <!-- Preview -->
+        <div id="preview-wrap" style="display:flex;flex-direction:column;height:550px;min-width:0;">
+          <div class="card"
+            style="padding:0;overflow:hidden;flex:1;display:flex;flex-direction:column;margin-bottom:0;min-width:0;">
+            <div
+              style="padding:16px 20px; border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; background:var(--bg-secondary);">
+              <div style="font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--blue-400)" stroke-width="2"
+                  stroke-linecap="round">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10 9 9 9 8 9" />
+                </svg>
+                Live Preview Laporan
+              </div>
+              <span class="badge badge-blue" id="preview-badge">Belum digenerate</span>
+            </div>
+            <div id="report-preview-area"
+              style="padding:24px;overflow-y:auto;overflow-x:hidden;flex:1;background:var(--bg-card);scrollbar-width:thin;scrollbar-color:var(--border-strong) var(--bg-card);min-width:0;">
+              <div class="empty-state" style="margin-top:60px;">
+                <div class="empty-icon"><svg viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg></div>
+                <div class="empty-title">Laporan belum digenerate</div>
+                <div class="empty-desc">Atur konfigurasi dan tekan "Generate Laporan"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/statistik.js"></script>
+  <script>
+    const session = initPage();
+    let currentReportData = null;
+
+    if (session) {
+      // Set pembuat ke nama user login
+      document.getElementById('lap-pembuat').value = session.fullName;
+
+      const currentYear = new Date().getFullYear();
+      document.getElementById('lap-start').value = `${currentYear}-01-01`;
+      document.getElementById('lap-end').value = `${currentYear}-12-31`;
+
+      // Toggle bulan visibility berdasarkan jenis laporan
+      document.getElementById('lap-jenis').addEventListener('change', function () {
+        const monthGroup = document.getElementById('lap-month-group');
+        const yearGroup = document.getElementById('lap-year-group');
+        const dateGroup = document.getElementById('lap-date-group');
+        const v = this.value;
+        monthGroup.style.display = (v === 'bulanan' || v === 'kuartalan') ? '' : 'none';
+        yearGroup.style.display = (v === 'harian') ? 'none' : '';
+        dateGroup.style.display = (v === 'harian') ? '' : 'none';
+      });
+      document.getElementById('lap-jenis').dispatchEvent(new Event('change'));
+
+      document.getElementById('btn-generate').addEventListener('click', generateLaporan);
+      document.getElementById('btn-print').addEventListener('click', () => { window.print(); });
+      document.getElementById('btn-csv').addEventListener('click', exportCSV);
+      document.getElementById('btn-pdf').addEventListener('click', exportPDF);
+
+      // Samakan tinggi preview dengan konfigurasi
+      setTimeout(() => {
+        const leftC = document.getElementById('konfig-card');
+        const rightW = document.getElementById('preview-wrap');
+        if (leftC && rightW) rightW.style.height = leftC.offsetHeight + 'px';
+      }, 100);
     }
 
-    if (jenis === 'harian') {
-       const startVal = document.getElementById('lap-start').value;
-       const endVal = document.getElementById('lap-end').value;
-       const sLabel = startVal ? DataManager.formatDate(startVal) : 'Awal';
-       const eLabel = endVal ? DataManager.formatDate(endVal) : 'Sekarang';
-       periodeLabel = (startVal || endVal) ? `${sLabel} — ${eLabel}` : 'Semua Tanggal (Rentang)';
-       filterFn = r => isDateInRange(r.tanggal, startVal, endVal);
-    } else if (jenis === 'bulanan') {
-      periodeLabel = `${monthNames[bulan]} ${tahun}`;
-      filterFn = r => {
-        const d = new Date(r.tanggal);
-        return d.getFullYear() === tahun && d.getMonth() + 1 === bulan;
-      };
-    } else if (jenis === 'kuartalan') {
-      const q = Math.ceil(bulan / 3);
-      periodeLabel = `${quarters[q]} ${tahun}`;
-      const qMonths = [[1,2,3],[4,5,6],[7,8,9],[10,11,12]][q-1];
-      filterFn = r => {
-        const d = new Date(r.tanggal);
-        return d.getFullYear() === tahun && qMonths.includes(d.getMonth()+1);
-      };
-    } else {
-      periodeLabel = `Tahun ${tahun}`;
-      filterFn = r => new Date(r.tanggal).getFullYear() === tahun;
-    }
+    function generateLaporan() {
+      const jenis = document.getElementById('lap-jenis').value;
+      const tahun = parseInt(document.getElementById('lap-tahun').value);
+      const bulan = parseInt(document.getElementById('lap-bulan').value);
+      const pembuat = document.getElementById('lap-pembuat').value || 'Data Analis';
+      const kepada = document.getElementById('lap-kepada').value || 'Perusahaan';
 
-    const filtPrd = produksi.filter(filterFn);
-    const filtPjl = penjualan.filter(filterFn);
+      const produksi = DataManager.getProduksi();
+      const penjualan = DataManager.getPenjualan();
+      const now = new Date();
 
-    // Aggregates
-    const totalPrd  = filtPrd.reduce((s,r)=>s+r.jumlah,0);
-    const totalTarget=filtPrd.reduce((s,r)=>s+r.target,0);
-    const totalPjl  = filtPjl.reduce((s,r)=>s+r.jumlah,0);
-    const totalRev  = filtPjl.reduce((s,r)=>s+(r.jumlah*r.hargaSatuan),0);
-    const efisiensi = DataManager.getEfisiensiProduksi();
+      const monthNames = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+      const quarters = { 1: 'Q1 (Jan-Mar)', 2: 'Q2 (Apr-Jun)', 3: 'Q3 (Jul-Sep)', 4: 'Q4 (Okt-Des)' };
 
-    // Per produk
-    const byProd = {};
-    DataManager.PRODUCTS.forEach(p => { byProd[p] = { prod:0,target:0,pen:0,rev:0 }; });
-    filtPrd.forEach(r => { if(byProd[r.produk]) { byProd[r.produk].prod+=r.jumlah; byProd[r.produk].target+=r.target; } });
-    filtPjl.forEach(r => { if(byProd[r.produk]) { byProd[r.produk].pen+=r.jumlah; byProd[r.produk].rev+=r.jumlah*r.hargaSatuan; } });
+      let periodeLabel;
+      let filterFn;
 
-    const jenisLabel = { harian:'Laporan Harian', bulanan:'Laporan Bulanan', kuartalan:'Laporan Kuartalan', tahunan:'Laporan Tahunan', eksekutif:'Ringkasan Eksekutif' };
+      function isDateInRange(dateStr, startStr, endStr) {
+        if (!startStr && !endStr) return true;
+        const target = new Date(dateStr).getTime();
+        if (startStr && target < new Date(startStr).getTime()) return false;
+        if (endStr && target > new Date(endStr).getTime()) return false;
+        return true;
+      }
 
-    currentReportData = { periodeLabel, byProd, totalPrd, totalTarget, totalPjl, totalRev, efisiensi };
+      if (jenis === 'harian') {
+        const startVal = document.getElementById('lap-start').value;
+        const endVal = document.getElementById('lap-end').value;
+        const sLabel = startVal ? DataManager.formatDate(startVal) : 'Awal';
+        const eLabel = endVal ? DataManager.formatDate(endVal) : 'Sekarang';
+        periodeLabel = (startVal || endVal) ? `${sLabel} — ${eLabel}` : 'Semua Tanggal (Rentang)';
+        filterFn = r => isDateInRange(r.tanggal, startVal, endVal);
+      } else if (jenis === 'bulanan') {
+        periodeLabel = `${monthNames[bulan]} ${tahun}`;
+        filterFn = r => {
+          const d = new Date(r.tanggal);
+          return d.getFullYear() === tahun && d.getMonth() + 1 === bulan;
+        };
+      } else if (jenis === 'kuartalan') {
+        const q = Math.ceil(bulan / 3);
+        periodeLabel = `${quarters[q]} ${tahun}`;
+        const qMonths = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]][q - 1];
+        filterFn = r => {
+          const d = new Date(r.tanggal);
+          return d.getFullYear() === tahun && qMonths.includes(d.getMonth() + 1);
+        };
+      } else {
+        periodeLabel = `Tahun ${tahun}`;
+        filterFn = r => new Date(r.tanggal).getFullYear() === tahun;
+      }
 
-    const html = `
+      const filtPrd = produksi.filter(filterFn);
+      const filtPjl = penjualan.filter(filterFn);
+
+      // Aggregates
+      const totalPrd = filtPrd.reduce((s, r) => s + r.jumlah, 0);
+      const totalTarget = filtPrd.reduce((s, r) => s + r.target, 0);
+      const totalPjl = filtPjl.reduce((s, r) => s + r.jumlah, 0);
+      const totalRev = filtPjl.reduce((s, r) => s + (r.jumlah * r.hargaSatuan), 0);
+      const efisiensi = DataManager.getEfisiensiProduksi();
+
+      // Per produk
+      const byProd = {};
+      DataManager.PRODUCTS.forEach(p => { byProd[p] = { prod: 0, target: 0, pen: 0, rev: 0 }; });
+      filtPrd.forEach(r => { if (byProd[r.produk]) { byProd[r.produk].prod += r.jumlah; byProd[r.produk].target += r.target; } });
+      filtPjl.forEach(r => { if (byProd[r.produk]) { byProd[r.produk].pen += r.jumlah; byProd[r.produk].rev += r.jumlah * r.hargaSatuan; } });
+
+      const jenisLabel = { harian: 'Laporan Harian', bulanan: 'Laporan Bulanan', kuartalan: 'Laporan Kuartalan', tahunan: 'Laporan Tahunan', eksekutif: 'Ringkasan Eksekutif' };
+
+      currentReportData = { periodeLabel, byProd, totalPrd, totalTarget, totalPjl, totalRev, efisiensi };
+
+      const html = `
       <div class="report-preview" id="printable-report">
         <div class="report-header">
           <div class="report-logo-box">
@@ -410,8 +721,8 @@
           <div class="report-meta">
             <div><strong>Jenis:</strong> ${jenisLabel[jenis]}</div>
             <div><strong>Periode:</strong> ${periodeLabel}</div>
-            <div><strong>Tanggal Cetak:</strong> ${now.toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'})}</div>
-            <div><strong>No. Laporan:</strong> LAP-${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}</div>
+            <div><strong>Tanggal Cetak:</strong> ${now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
+            <div><strong>No. Laporan:</strong> LAP-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}</div>
           </div>
         </div>
 
@@ -455,9 +766,9 @@
               </thead>
               <tbody>
                 ${DataManager.PRODUCTS.map(p => {
-                  const d = byProd[p];
-                  const eff = d.target > 0 ? ((d.prod/d.target)*100).toFixed(1) : '-';
-                  return `<tr>
+        const d = byProd[p];
+        const eff = d.target > 0 ? ((d.prod / d.target) * 100).toFixed(1) : '-';
+        return `<tr>
                     <td><strong>${p}</strong></td>
                     <td>${DataManager.formatNumber(d.prod)}</td>
                     <td>${DataManager.formatNumber(d.target)}</td>
@@ -465,12 +776,12 @@
                     <td>${DataManager.formatNumber(d.pen)}</td>
                     <td>${DataManager.formatCurrency(d.rev)}</td>
                   </tr>`;
-                }).join('')}
+      }).join('')}
                 <tr style="font-weight:700;background:#f8fafc;">
                   <td>TOTAL</td>
                   <td>${DataManager.formatNumber(totalPrd)}</td>
                   <td>${DataManager.formatNumber(totalTarget)}</td>
-                  <td>${totalTarget>0?((totalPrd/totalTarget)*100).toFixed(1):'0'}%</td>
+                  <td>${totalTarget > 0 ? ((totalPrd / totalTarget) * 100).toFixed(1) : '0'}%</td>
                   <td>${DataManager.formatNumber(totalPjl)}</td>
                   <td>${DataManager.formatCurrency(totalRev)}</td>
                 </tr>
@@ -485,9 +796,9 @@
           <div style="font-size:0.85rem;color:#334155;line-height:1.8;">
             <p>Berdasarkan data ${periodeLabel}, total produksi mencapai <strong>${DataManager.formatNumber(totalPrd)} unit</strong> dengan efisiensi rata-rata sebesar <strong>${efisiensi.toFixed(1)}%</strong> terhadap target yang ditetapkan.</p>
             <br>
-            <p>Produk dengan volume produksi tertinggi adalah <strong>${Object.entries(byProd).sort((a,b)=>b[1].prod-a[1].prod)[0][0]}</strong>, sementara produk <strong>${Object.entries(byProd).sort((a,b)=>a[1].prod-b[1].prod)[0][0]}</strong> memiliki volume terendah sesuai karakteristik permintaan pasar.</p>
+            <p>Produk dengan volume produksi tertinggi adalah <strong>${Object.entries(byProd).sort((a, b) => b[1].prod - a[1].prod)[0][0]}</strong>, sementara produk <strong>${Object.entries(byProd).sort((a, b) => a[1].prod - b[1].prod)[0][0]}</strong> memiliki volume terendah sesuai karakteristik permintaan pasar.</p>
             <br>
-            <p>Total pendapatan penjualan periode ini adalah <strong>${DataManager.formatCurrency(totalRev)}</strong> dengan rasio penjualan terhadap produksi sebesar <strong>${totalPrd>0?((totalPjl/totalPrd)*100).toFixed(1):0}%</strong>.</p>
+            <p>Total pendapatan penjualan periode ini adalah <strong>${DataManager.formatCurrency(totalRev)}</strong> dengan rasio penjualan terhadap produksi sebesar <strong>${totalPrd > 0 ? ((totalPjl / totalPrd) * 100).toFixed(1) : 0}%</strong>.</p>
           </div>
         </div>
 
@@ -498,57 +809,58 @@
       </div>
     `;
 
-    document.getElementById('report-preview-area').innerHTML = html;
-    document.getElementById('preview-badge').textContent = jenisLabel[jenis] + ' — ' + periodeLabel;
-    document.getElementById('preview-badge').className   = 'badge badge-green';
-    
-    document.getElementById('btn-csv').disabled = false;
-    document.getElementById('btn-pdf').disabled = false;
-    document.getElementById('btn-print').disabled = false;
+      document.getElementById('report-preview-area').innerHTML = html;
+      document.getElementById('preview-badge').textContent = jenisLabel[jenis] + ' — ' + periodeLabel;
+      document.getElementById('preview-badge').className = 'badge badge-green';
 
-    Toast.show('Laporan berhasil digenerate.', 'success');
-  }
+      document.getElementById('btn-csv').disabled = false;
+      document.getElementById('btn-pdf').disabled = false;
+      document.getElementById('btn-print').disabled = false;
 
-  function exportCSV() {
-    if (!currentReportData) return;
-    const { byProd, totalPrd, totalTarget, totalPjl, totalRev } = currentReportData;
-    let csv = ['Produk,Produksi (pcs),Target (pcs),Efisiensi (%),Terjual (pcs),Pendapatan'];
-    
-    DataManager.PRODUCTS.forEach(p => {
-       const d = byProd[p];
-       const eff = d.target > 0 ? ((d.prod/d.target)*100).toFixed(1) : '0.0';
-       csv.push(`"${p}",${d.prod},${d.target},${eff},${d.pen},${d.rev}`);
-    });
-    
-    const totEff = totalTarget > 0 ? ((totalPrd/totalTarget)*100).toFixed(1) : '0.0';
-    csv.push(`"TOTAL",${totalPrd},${totalTarget},${totEff},${totalPjl},${totalRev}`);
-    
-    const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Laporan_Produksi_${currentReportData.periodeLabel.replace(/ /g, '_')}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
+      Toast.show('Laporan berhasil digenerate.', 'success');
+    }
 
-  function exportPDF() {
-    const element = document.getElementById('printable-report');
-    if (!element) return;
-    
-    const opt = {
-      margin:       15,
-      filename:     `Laporan_Produksi_${currentReportData.periodeLabel.replace(/ /g, '_')}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    
-    html2pdf().set(opt).from(element).save().then(() => {
-       Toast.show('PDF berhasil diunduh.', 'success');
-    });
-  }
-</script>
+    function exportCSV() {
+      if (!currentReportData) return;
+      const { byProd, totalPrd, totalTarget, totalPjl, totalRev } = currentReportData;
+      let csv = ['Produk,Produksi (pcs),Target (pcs),Efisiensi (%),Terjual (pcs),Pendapatan'];
+
+      DataManager.PRODUCTS.forEach(p => {
+        const d = byProd[p];
+        const eff = d.target > 0 ? ((d.prod / d.target) * 100).toFixed(1) : '0.0';
+        csv.push(`"${p}",${d.prod},${d.target},${eff},${d.pen},${d.rev}`);
+      });
+
+      const totEff = totalTarget > 0 ? ((totalPrd / totalTarget) * 100).toFixed(1) : '0.0';
+      csv.push(`"TOTAL",${totalPrd},${totalTarget},${totEff},${totalPjl},${totalRev}`);
+
+      const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Laporan_Produksi_${currentReportData.periodeLabel.replace(/ /g, '_')}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function exportPDF() {
+      const element = document.getElementById('printable-report');
+      if (!element) return;
+
+      const opt = {
+        margin: 15,
+        filename: `Laporan_Produksi_${currentReportData.periodeLabel.replace(/ /g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().then(() => {
+        Toast.show('PDF berhasil diunduh.', 'success');
+      });
+    }
+  </script>
 </body>
+
 </html>
